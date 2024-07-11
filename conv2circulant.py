@@ -38,18 +38,73 @@ def circulant_w(x_len, kernel, coors, y_len):
     return weights
 
 
-def aggregate_g(k, x_len, coors):
-    k = k.squeeze()
-    A_mat = []
-    for coor in coors:
-        A_row = []
-        for c in coor:
-            A_unit = np.zeros(shape=x_len, dtype=np.float32)
-            for i in c:
-                assert A_unit[i[1]] == 0
-                A_unit[i[1]] = k[i[0]]
-            A_row.append(A_unit)
-        A_mat.append(A_row)
-    A_mat = np.array(A_mat)
-    return A_mat.reshape(-1, A_mat.shape[-1])
+# def aggregate_g(k, x_len, coors):
+#     k = k.squeeze()
+#     A_mat = []
+#     for coor in coors:
+#         A_row = []
+#         for c in coor:
+#             A_unit = np.zeros(shape=x_len, dtype=np.float32)
+#             for i in c:
+#                 assert A_unit[i[1]] == 0
+#                 A_unit[i[1]] = k[i[0]]
+#             A_row.append(A_unit)
+#         A_mat.append(A_row)
+#     A_mat = np.array(A_mat)
+#     return A_mat.reshape(-1, A_mat.shape[-1])
 
+# def differential_evolution_aggregate(k, x_len, bounds, F=0.5, CR=0.9):
+def aggregate_g(k, x_len, bounds, F=0.5, CR=0.9):
+  """
+  This function aggregates gradients using Differential Evolution (DE).
+
+  Args:
+      k: Gradients (numpy array, shape=(num_gradients,)).
+      x_len: Length of the final aggregated gradient (int).
+      bounds: Lower and upper bounds for the search space (list of tuples, [(min1, max1),...]).
+      F: Scaling factor for the differential mutation (float, default=0.5).
+      CR: Crossover probability (float, default=0.9).
+
+  Returns:
+      Aggregated gradient (numpy array, shape=(x_len,)).
+  """
+
+  # Population size (can be adjusted for better performance)
+  pop_size = 10
+
+  # Initialize population with random values within bounds
+  population = np.random.uniform(low=bounds[:, 0], high=bounds[:, 1], size=(pop_size, x_len))
+
+  # Loop for a fixed number of iterations (can be adjusted)
+  for _ in range(10):
+
+    # Generate mutant vector
+    for i in range(pop_size):
+      r1, r2, r3 = np.random.choice(pop_size, size=3, replace=False)
+      mutant = population[r1] + F * (population[r2] - population[r3])
+
+      # Clip mutant to stay within bounds
+      mutant = np.clip(mutant, bounds[:, 0], bounds[:, 1])
+
+      # Crossover
+      trial_vector = np.copy(population[i])
+      crossover_mask = np.random.rand(x_len) < CR
+      trial_vector[crossover_mask] = mutant[crossover_mask]
+
+      # Evaluate fitness (replace with your actual gradient aggregation logic)
+      fitness_i = your_fitness_function(trial_vector)
+      fitness_orig = your_fitness_function(population[i])
+
+      # Selection
+      if fitness_i < fitness_orig:
+        population[i] = trial_vector
+
+  # Select best individual as the aggregated gradient
+  best_index = np.argmin([your_fitness_function(v) for v in population])
+  return population[best_index]
+
+# Replace this with your actual function that calculates the fitness based
+# on your gradient aggregation logic (e.g., loss on the model)
+def your_fitness_function(gradient):
+  # Implement your logic here
+  pass

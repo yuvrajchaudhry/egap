@@ -69,9 +69,9 @@ def main():
     k = None
     last_weight = []
 
-    print('****************')
-    print('perform R-GAP')
-    print('****************')
+    print('-------------------')
+    print('Performing Evolved R-GAP')
+    print('-------------------')
     for i in range(len(modules)):
         g = original_dy_dx[i].numpy()
         w = list(modules[i].layer.parameters())[0].detach().cpu().numpy()
