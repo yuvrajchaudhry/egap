@@ -6,6 +6,7 @@ from utils import *
 from models import CNN6, CNN6d, FCN3
 from recursive_attack import r_gap, peeling, fcn_reconstruction, inverse_udldu
 import matplotlib.pyplot as plt
+import time
 
 with open("config.yaml", 'r') as stream:
     config = yaml.safe_load(stream)
@@ -16,9 +17,10 @@ parser.add_argument("-b", "--batchsize", default=1, help="Mini-batch size", type
 parser.add_argument("-p", "--parameters", help="Load pre-trained model.", default=None)
 parser.add_argument("-m", "--model", help="Network architecture.", choices=["CNN6", "CNN6-d", "FCN3"], default='CNN6')
 args = parser.parse_args()
-setup = {'device': '    mcpu', 'dtype': torch.float32}
+setup = {'device': 'cpu', 'dtype': torch.float32}
 print(f'Running on {setup["device"]}, PyTorch version {torch.__version__}')
 
+start_time = time.time()
 
 def main():
     train_sample, test_sample = dataloader(dataset=args.dataset, mode="attack", index=args.index,
@@ -54,23 +56,23 @@ def main():
     # generate gradients of real data
     pred, x_shape = net(x)
     # reversed label to make sure mu is unique, just for better demonstration
-        y = torch.tensor([0 if p > 0 else 1 for p in pred]).to(**setup)
-        print(f'pred: {pred.detach().numpy()}, y: {y}')
-        pred_loss = pred_loss_fn(inputs=pred, target=y)
-        dy_dx = torch.autograd.grad(pred_loss, list(net.parameters()))
-        original_dy_dx = [g.detach().clone() for g in dy_dx]
+    y = torch.tensor([0 if p > 0 else 1 for p in pred]).to(**setup)
+    print(f'pred: {pred.detach().numpy()}, y: {y}')
+    pred_loss = pred_loss_fn(inputs=pred, target=y)
+    dy_dx = torch.autograd.grad(pred_loss, list(net.parameters()))
+    original_dy_dx = [g.detach().clone() for g in dy_dx]
 
-        # reconstruction procedure
-        original_dy_dx.reverse()
-        modules = net.body[-1::-1]
-        x_shape.reverse()
-        k = None
-        last_weight = []
+    # reconstruction procedure
+    original_dy_dx.reverse()
+    modules = net.body[-1::-1]
+    x_shape.reverse()
+    k = None
+    last_weight = []
 
-        print('****************')
-        print('perform R-GAP')
-        print('****************')
-        for i in range(len(modules)):
+    print('****************')
+    print('perform R-GAP')
+    print('****************')
+    for i in range(len(modules)):
         g = original_dy_dx[i].numpy()
         w = list(modules[i].layer.parameters())[0].detach().cpu().numpy()
         if k is None:
@@ -141,3 +143,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+print("--- %s seconds ---" % (time.time()- start_time))
