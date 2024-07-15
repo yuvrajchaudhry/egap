@@ -1,4 +1,6 @@
 import numpy as np
+import torch
+import torch.nn as nn
 
 
 def generate_coordinates(x_shape, kernel, stride, padding):
@@ -54,7 +56,7 @@ def circulant_w(x_len, kernel, coors, y_len):
 #     return A_mat.reshape(-1, A_mat.shape[-1])
 
 # def differential_evolution_aggregate(k, x_len, bounds, F=0.5, CR=0.9):
-def aggregate_g(k, x_len, bounds, F=0.5, CR=0.9):
+def aggregate_g(k, x_len, coors, bounds, F=0.5, CR=0.9):
   """
   This function aggregates gradients using Differential Evolution (DE).
 
@@ -72,11 +74,16 @@ def aggregate_g(k, x_len, bounds, F=0.5, CR=0.9):
   # Population size (can be adjusted for better performance)
   pop_size = 10
 
+  #Converting bounds to numpy array
+  bounds = np.array(bounds)
+
   # Initialize population with random values within bounds
-  population = np.random.uniform(low=bounds[:, 0], high=bounds[:, 1], size=(pop_size, x_len))
+  lower_bounds = bounds[:,0]
+  higher_bounds = bounds[:, 1]
+  population = np.random.uniform(low=lower_bounds, high=higher_bounds, size=(pop_size, x_len))
 
   # Loop for a fixed number of iterations (can be adjusted)
-  for _ in range(10):
+  for _ in coors:
 
     # Generate mutant vector
     for i in range(pop_size):
@@ -92,19 +99,19 @@ def aggregate_g(k, x_len, bounds, F=0.5, CR=0.9):
       trial_vector[crossover_mask] = mutant[crossover_mask]
 
       # Evaluate fitness (replace with your actual gradient aggregation logic)
-      fitness_i = your_fitness_function(trial_vector)
-      fitness_orig = your_fitness_function(population[i])
+      fitness_i = rgapfit(trial_vector)
+      fitness_orig = rgapfit(population[i])
 
       # Selection
       if fitness_i < fitness_orig:
         population[i] = trial_vector
 
   # Select best individual as the aggregated gradient
-  best_index = np.argmin([your_fitness_function(v) for v in population])
+  best_index = np.argmin([rgapfit(v) for v in population])
   return population[best_index]
 
 # Replace this with your actual function that calculates the fitness based
 # on your gradient aggregation logic (e.g., loss on the model)
-def your_fitness_function(gradient):
-  # Implement your logic here
+def rgapfit(gradient):
+  nn.MSELoss(gradient)
   pass
