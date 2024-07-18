@@ -57,6 +57,10 @@ def padding_constraints(in_shape, padding):
 
 def cnn_reconstruction(in_shape, k, g, out, kernel, stride, padding):
     coors, x_len, y_len = generate_coordinates(x_shape=in_shape, kernel=kernel, stride=stride, padding=padding)
+<<<<<<< Updated upstream
+=======
+   # K = aggregate_g(k=k, x_len=x_len, coors=coors, bounds = [(0,1)] )
+>>>>>>> Stashed changes
     K = aggregate_g(k=k, x_len=x_len, coors=coors)
     W = circulant_w(x_len=x_len, kernel=kernel, coors=coors, y_len=y_len)
     P = padding_constraints(in_shape=in_shape, padding=padding)
@@ -71,7 +75,7 @@ def cnn_reconstruction(in_shape, k, g, out, kernel, stride, padding):
     print(f'lstsq residual: {result[1]}, rank: {result[2]} -> {W.shape[-1]}, '
           f'max/min singular value: {result[3].max():.2e}/{result[3].min():.2e}')
     x = result[0]
-    return x[peeling(in_shape=in_shape, padding=padding)], W
+    return x[peeling(in_shape=in_shape, padding=padding)],
 
 
 def fcn_reconstruction(k, gradient):
