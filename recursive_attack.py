@@ -57,10 +57,7 @@ def padding_constraints(in_shape, padding):
 
 def cnn_reconstruction(in_shape, k, g, out, kernel, stride, padding):
     coors, x_len, y_len = generate_coordinates(x_shape=in_shape, kernel=kernel, stride=stride, padding=padding)
-<<<<<<< Updated upstream
-=======
    # K = aggregate_g(k=k, x_len=x_len, coors=coors, bounds = [(0,1)] )
->>>>>>> Stashed changes
     K = aggregate_g(k=k, x_len=x_len, coors=coors)
     W = circulant_w(x_len=x_len, kernel=kernel, coors=coors, y_len=y_len)
     P = padding_constraints(in_shape=in_shape, padding=padding)
