@@ -32,7 +32,7 @@ def peeling(in_shape, padding):
     if padding == 0:
         return np.ones(shape=in_shape, dtype=bool).squeeze()
     h, w = np.array(in_shape[-2:]) + 2*padding
-    toremain = np.ones(h*w*in_shape[1], dtype=np.bool_)
+    toremain = np.ones(h*w*in_shape[1], dtype=bool)
     if padding:
         for c in range(in_shape[1]):
             for row in range(h):
