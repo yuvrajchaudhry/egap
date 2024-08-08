@@ -2,11 +2,11 @@ import torchvision
 import argparse
 import os
 import yaml
+import matplotlib.pyplot as plt
+import time
 from utils import *
 from models import CNN6, CNN6d, FCN3
 from recursive_attack import r_gap, peeling, fcn_reconstruction, inverse_udldu
-import matplotlib.pyplot as plt
-import time
 
 with open("config.yaml", 'r') as stream:
     config = yaml.safe_load(stream)
@@ -17,9 +17,10 @@ parser.add_argument("-b", "--batchsize", default=1, help="Mini-batch size", type
 parser.add_argument("-p", "--parameters", help="Load pre-trained model.", default=None)
 parser.add_argument("-m", "--model", help="Network architecture.", choices=["CNN6", "CNN6-d", "FCN3"], default='CNN6')
 args = parser.parse_args()
-#setup = {'device': 'cpu', 'dtype': torch.float32}
-setup = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'), 'dtype': torch.float32}
+setup = {'device': 'cpu', 'dtype': torch.float32}
+#setup = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'), 'dtype': torch.float32}
 print(f'Running on {setup["device"]}, PyTorch version {torch.__version__}')
+
 
 start_time = time.time()
 def main():
@@ -57,8 +58,7 @@ def main():
     pred, x_shape = net(x)
     # reversed label to make sure mu is unique, just for better demonstration
     y = torch.tensor([0 if p > 0 else 1 for p in pred]).to(**setup)
-    #print(f'pred: {pred.detach().numpy()}, y: {y}')
-    print(f'pred: {pred.cpu().detach().numpy()}, y: {y}')
+    print(f'pred: {pred.detach().numpy()}, y: {y}')
     pred_loss = pred_loss_fn(inputs=pred, target=y)
     dy_dx = torch.autograd.grad(pred_loss, list(net.parameters()))
     original_dy_dx = [g.detach().clone() for g in dy_dx]
@@ -70,19 +70,17 @@ def main():
     k = None
     last_weight = []
 
-    print('-------------------')
-    print('Performing Evolved R-GAP')
-    print('-------------------')
+    print('****************')
+    print('perform R-GAP')
+    print('****************')
     for i in range(len(modules)):
-        #g = original_dy_dx[i].numpy()
-        g = original_dy_dx[i].cpu().numpy()
+        g = original_dy_dx[i].numpy()
         w = list(modules[i].layer.parameters())[0].detach().cpu().numpy()
         if k is None:
             udldu = np.dot(g.reshape(-1), w.reshape(-1))
             u = inverse_udldu(udldu)
 
             # For simplicity assume y as known here. For details please refer to the paper.
-            y = y.cpu().numpy()
             y = np.array([-1 if n == 0 else n for n in y], dtype=np.float32).reshape(-1, 1)
             y = y.mean() if y.mean() != 0 else 0.1
 

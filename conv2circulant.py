@@ -2,7 +2,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 from scipy.optimize import differential_evolution
-
 def generate_coordinates(x_shape, kernel, stride, padding):
     assert len(x_shape) == 4
     assert len(kernel.shape) == 4
@@ -40,83 +39,24 @@ def circulant_w(x_len, kernel, coors, y_len):
     return weights
 
 
-# def aggregate_g(k, x_len, coors):
-#     k = k.squeeze()
-#     A_mat = []
-#     for coor in coors:
-#         A_row = []
-#         for c in coor:
-#             A_unit = np.zeros(shape=x_len, dtype=np.float32)
-#             for i in c:
-#                 assert A_unit[i[1]] == 0
-#                 A_unit[i[1]] = k[i[0]]
-#             A_row.append(A_unit)
-#         A_mat.append(A_row)
-#     A_mat = np.array(A_mat)
-#     return A_mat.reshape(-1, A_mat.shape[-1])
+def aggregate_g(k, x_len, coors):
+    k = k.squeeze()
+    A_mat = []
+    for coor in coors:
+        A_row = []
+        for c in coor:
+            A_unit = np.zeros(shape=x_len, dtype=np.float32)
+            for i in c:
+                assert A_unit[i[1]] == 0
+                A_unit[i[1]] = k[i[0]]
+            A_row.append(A_unit)
+        A_mat.append(A_row)
+    A_mat = np.array(A_mat)
+    return A_mat.reshape(-1, A_mat.shape[-1])
 
 
-# def aggregate_g(k, x_len, coors, bounds, F=0.5, CR=0.9):
-#   """
-#   This function aggregates gradients using Differential Evolution (DE).
-#
-#   Args:
-#       k: Gradients (numpy array, shape=(num_gradients,)).
-#       x_len: Length of the final aggregated gradient (int).
-#       bounds: Lower and upper bounds for the search space (list of tuples, [(min1, max1),...]).
-#       F: Scaling factor for the differential mutation (float, default=0.5).
-#       CR: Crossover probability (float, default=0.9).
-#
-#   Returns:
-#       Aggregated gradient (numpy array, shape=(x_len,)).
-#   """
-#
-#   # Population size (can be adjusted for better performance)
-#   pop_size = 10
-#
-#   #Converting bounds to numpy array
-#   bounds = np.array(bounds)
-#
-#   # Initialize population with random values within bounds
-#   lower_bounds = bounds[:,0]
-#   higher_bounds = bounds[:, 1]
-#   population = np.random.uniform(low=lower_bounds, high=higher_bounds, size=(pop_size, x_len))
-#
-#   # Loop for a fixed number of iterations (can be adjusted)
-#   for _ in coors:
-#
-#     # Generate mutant vector
-#     for i in range(pop_size):
-#       r1, r2, r3 = np.random.choice(pop_size, size=3, replace=False)
-#       mutant = population[r1] + F * (population[r2] - population[r3])
-#
-#       # Clip mutant to stay within bounds
-#       mutant = np.clip(mutant, bounds[:, 0], bounds[:, 1])
-#
-#       # Crossover
-#       trial_vector = np.copy(population[i])
-#       crossover_mask = np.random.rand(x_len) < CR
-#       trial_vector[crossover_mask] = mutant[crossover_mask]
-#
-#       # Evaluate fitness (replace with your actual gradient aggregation logic)
-#       fitness_i = rgapfit(trial_vector)
-#       fitness_orig = rgapfit(population[i])
-#
-#       # Selection
-#       if fitness_i < fitness_orig:
-#         population[i] = trial_vector
-#
-#   # Select best individual as the aggregated gradient
-#   best_index = np.argmin([rgapfit(v) for v in population])
-#   return population[best_index]
-#
-# # Replace this with your actual function that calculates the fitness based
-# # on your gradient aggregation logic (e.g., loss on the model)
-# def rgapfit(gradient):
-#   nn.MSELoss(gradient)
-#   pass
 
-
+#DE Implementation
 # def aggregate_g(k, x_len, coors, max_params=50000):
 #     k = k.squeeze()
 #
@@ -169,6 +109,7 @@ def circulant_w(x_len, kernel, coors, y_len):
 #
 #     return A_mat.reshape(-1, A_mat.shape[-1])
 
+#LBFGS Implementation
 # def aggregate_g(k, x_len, coors, max_params=50000):
 #     k = k.squeeze()
 #
@@ -227,79 +168,86 @@ def circulant_w(x_len, kernel, coors, y_len):
 #
 #     return A_mat.reshape(-1, A_mat.shape[-1])
 
-def aggregate_g(k, x_len, coors, num_iterations=100, lr=0.01):
-    k = k.squeeze()
-
-    # Convert k to a PyTorch tensor
-    k_tensor = torch.tensor(k, dtype=torch.float32)  # Make sure this is done at the start
-
-    def fitness_function(params):
-        A_mat = []
-        idx = 0
-        for coor in coors:
-            A_row = []
-            for c in coor:
-                A_unit = np.zeros(shape=x_len, dtype=np.float32)
-                for i in c:
-                    A_unit[i[1]] = params[idx].item()  # Extract scalar value from tensor
-                    idx += 1
-                A_row.append(A_unit)
-            A_mat.append(A_row)
-        A_mat = np.array(A_mat)
-
-        # Convert A_mat to a PyTorch tensor
-        A_mat_tensor = torch.tensor(A_mat.reshape(-1, x_len), dtype=torch.float32)
-
-        # Ensure k_tensor has the same shape as A_mat_tensor
-        if k_tensor.shape != A_mat_tensor.shape:
-            k_tensor = k_tensor.view(A_mat_tensor.shape)
-
-        # Calculate Mean Squared Error (MSE)
-        mse = torch.mean((A_mat_tensor - k_tensor) ** 2)
-        return mse
-
-    # Determine the number of parameters needed
-    num_params = sum(len(c) for coor in coors for c in coor)
-    print(f'Number of Parameters: {num_params}')
-
-    # Initialize parameters
-    initial_params = torch.zeros(num_params, dtype=torch.float32, requires_grad=True)
-
-    # Create Adam optimizer
-    optimizer = torch.optim.Adam([initial_params], lr=lr)
-
-    # Optimization loop
-    for iteration in range(num_iterations):
-        optimizer.zero_grad()  # Clear previous gradients
-
-        # Calculate loss (fitness function)
-        loss = fitness_function(initial_params)  # Pass the current parameters to the fitness function
-
-        # Backpropagation
-        loss.backward()
-
-        # Update parameters
-        optimizer.step()
-
-        # Print loss every 10 iterations
-        if iteration % 10 == 0:
-            print(f"Iteration {iteration}, Loss: {loss.item()}")
-
-    # Convert final parameters to numpy array
-    optimal_params = initial_params.detach().numpy()
-
-    # Construct A_mat using optimal parameters
-    A_mat = []
-    idx = 0
-    for coor in coors:
-        A_row = []
-        for c in coor:
-            A_unit = np.zeros(shape=x_len, dtype=np.float32)
-            for i in c:
-                A_unit[i[1]] = optimal_params[idx]  # Use optimized parameters
-                idx += 1
-            A_row.append(A_unit)
-        A_mat.append(A_row)
-    A_mat = np.array(A_mat)
-
-    return A_mat.reshape(-1, A_mat.shape[-1])
+#Adam Implementation
+# def aggregate_g(k, x_len, coors, num_iterations=100, lr=0.01, device='cuda'):
+#     k = k.squeeze()
+#
+#     # Convert k to a PyTorch tensor and move to the desired device
+#     k_tensor = torch.tensor(k, dtype=torch.float32, device=device)
+#     print(f'k_tensor initialized with shape: {k_tensor.shape} on device: {device}')
+#
+#     def fitness_function(params, k_tensor):
+#         A_mat = []
+#         idx = 0
+#         for coor in coors:
+#             A_row = []
+#             for c in coor:
+#                 A_unit = torch.zeros(x_len, dtype=torch.float32, device=device)
+#                 for i in c:
+#                     A_unit[i[1]] = params[idx]  # Use tensor directly
+#                     idx += 1
+#                 A_row.append(A_unit)
+#             A_mat.append(A_row)
+#
+#         A_mat = torch.stack([torch.stack(row) for row in A_mat])
+#         print(f'A_mat shape: {A_mat.shape}')
+#         print(f'k_tensor shape before reshape attempt: {k_tensor.shape}')
+#
+#         # Ensure k_tensor has the same shape as A_mat
+#         if k_tensor.numel() != A_mat.numel():
+#             raise ValueError(f"Cannot reshape k_tensor of shape {k_tensor.shape} with {k_tensor.numel()} elements to shape {A_mat.shape} with {A_mat.numel()} elements")
+#
+#         if k_tensor.shape != A_mat.shape:
+#             print(f'Reshaping k_tensor from shape: {k_tensor.shape} to shape: {A_mat.shape}')
+#             k_tensor = k_tensor.view(A_mat.shape)
+#
+#         # Calculate Mean Squared Error (MSE)
+#         mse = torch.mean((A_mat - k_tensor) ** 2)
+#         return mse
+#
+#     # Determine the number of parameters needed
+#     num_params = sum(len(c) for coor in coors for c in coor)
+#     print(f'Number of Parameters: {num_params}')
+#
+#     # Initialize parameters and move to the desired device
+#     initial_params = torch.zeros(num_params, dtype=torch.float32, requires_grad=True, device=device)
+#     print(f'initial_params initialized with shape: {initial_params.shape} on device: {device}')
+#
+#     # Create Adam optimizer
+#     optimizer = torch.optim.Adam([initial_params], lr=lr)
+#
+#     # Optimization loop
+#     for iteration in range(num_iterations):
+#         optimizer.zero_grad()  # Clear previous gradients
+#
+#         # Calculate loss (fitness function)
+#         loss = fitness_function(initial_params, k_tensor)  # Pass the current parameters and k_tensor to the fitness function
+#
+#         # Backpropagation
+#         loss.backward()
+#
+#         # Update parameters
+#         optimizer.step()
+#
+#         # Print loss every 10 iterations
+#         if iteration % 10 == 0:
+#             print(f"Iteration {iteration}, Loss: {loss.item()}")
+#
+#     # Convert final parameters to numpy array
+#     optimal_params = initial_params.detach().cpu().numpy()
+#
+#     # Construct A_mat using optimal parameters
+#     A_mat = []
+#     idx = 0
+#     for coor in coors:
+#         A_row = []
+#         for c in coor:
+#             A_unit = np.zeros(x_len, dtype=np.float32)
+#             for i in c:
+#                 A_unit[i[1]] = optimal_params[idx]  # Use optimized parameters
+#                 idx += 1
+#             A_row.append(A_unit)
+#         A_mat.append(A_row)
+#     A_mat = np.array(A_mat)
+#
+#     return A_mat.reshape(-1, A_mat.shape[-1])
