@@ -42,7 +42,7 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds for u (you can adjust these bounds as needed)
-    bounds = [(-10, 10)]  # Example bounds; adjust as necessary
+    bounds = [(-5, 5)]  # Example bounds; adjust as necessary
 
     # Perform Differential Evolution optimization
     result = differential_evolution(objective, bounds)
