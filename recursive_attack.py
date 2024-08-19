@@ -1,5 +1,8 @@
 from utils import *
 from conv2circulant import *
+import torch
+import numpy as np
+from scipy.optimize import differential_evolution
 
 setup = {'device': 'cpu', 'dtype': torch.float32}
 
@@ -10,29 +13,54 @@ def logistic_loss(y, pred):
     return torch.mean(-(y*torch.log(pred)+(1-y)*torch.log(1-pred)))
 
 
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using gradient descend based method'''
+#     lr = 0.01
+#     u = torch.tensor(0).to(**setup).requires_grad_(True)
+#     udldu = torch.tensor(udldu).to(**setup)
+#     optimizer = torch.optim.Adam([u], lr=lr)
+#     loss_fn = nn.MSELoss()
+#     for i in range(30000):
+#         optimizer.zero_grad()
+#         udldu_ = -u / (1 + torch.exp(u))
+#         l = loss_fn(udldu_, udldu)
+#         l.backward()
+#         optimizer.step()
+#     udldu_ = -u / (1 + torch.exp(u))
+#     print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
+#     return u.detach().numpy()
+
 def inverse_udldu(udldu):
-    '''derive u from udldu using gradient descend based method'''
-    lr = 0.01
-    u = torch.tensor(0).to(**setup).requires_grad_(True)
+    '''derive u from udldu using Differential Evolution method'''
     udldu = torch.tensor(udldu).to(**setup)
-    optimizer = torch.optim.Adam([u], lr=lr)
-    loss_fn = nn.MSELoss()
-    for i in range(30000):
-        optimizer.zero_grad()
+
+    # Define the objective function for DE
+    def objective(u):
+        u = torch.tensor(u).to(**setup)
         udldu_ = -u / (1 + torch.exp(u))
-        l = loss_fn(udldu_, udldu)
-        l.backward()
-        optimizer.step()
+        loss = torch.mean((udldu_ - udldu) ** 2).item()
+        return loss
+
+    # Define bounds for u (you can adjust these bounds as needed)
+    bounds = [(-5, 5)]  # Example bounds; adjust as necessary
+
+    # Perform Differential Evolution optimization
+    result = differential_evolution(objective, bounds)
+    u_optimized = result.x[0]
+
+    # Calculate the final predicted udldu
+    u = torch.tensor(u_optimized).to(**setup)
     udldu_ = -u / (1 + torch.exp(u))
-    print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
-    return u.detach().numpy()
+
+    print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+    return u_optimized
 
 
 def peeling(in_shape, padding):
     if padding == 0:
         return np.ones(shape=in_shape, dtype=bool).squeeze()
     h, w = np.array(in_shape[-2:]) + 2*padding
-    toremain = np.ones(h*w*in_shape[1], dtype=np.bool_)
+    toremain = np.ones(h*w*in_shape[1], dtype=bool)
     if padding:
         for c in range(in_shape[1]):
             for row in range(h):
@@ -91,10 +119,3 @@ def r_gap(out, k, g, x_shape, weight, module):
 
     x, weight = cnn_reconstruction(in_shape=x_shape, k=k, g=g, kernel=weight, out=out, stride=stride, padding=padding)
     return x, weight
-
-
-
-
-
-
-

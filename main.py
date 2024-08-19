@@ -2,11 +2,11 @@ import torchvision
 import argparse
 import os
 import yaml
+import matplotlib.pyplot as plt
+import time
 from utils import *
 from models import CNN6, CNN6d, FCN3
 from recursive_attack import r_gap, peeling, fcn_reconstruction, inverse_udldu
-import matplotlib.pyplot as plt
-import time
 
 with open("config.yaml", 'r') as stream:
     config = yaml.safe_load(stream)
@@ -18,10 +18,11 @@ parser.add_argument("-p", "--parameters", help="Load pre-trained model.", defaul
 parser.add_argument("-m", "--model", help="Network architecture.", choices=["CNN6", "CNN6-d", "FCN3"], default='CNN6')
 args = parser.parse_args()
 setup = {'device': 'cpu', 'dtype': torch.float32}
+#setup = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'), 'dtype': torch.float32}
 print(f'Running on {setup["device"]}, PyTorch version {torch.__version__}')
 
-start_time = time.time()
 
+start_time = time.time()
 def main():
     train_sample, test_sample = dataloader(dataset=args.dataset, mode="attack", index=args.index,
                                            batchsize=args.batchsize, config=config)
@@ -69,9 +70,9 @@ def main():
     k = None
     last_weight = []
 
-    print('-------------------')
-    print('Performing Evolved R-GAP')
-    print('-------------------')
+    print('****************')
+    print('perform R-GAP')
+    print('****************')
     for i in range(len(modules)):
         g = original_dy_dx[i].numpy()
         w = list(modules[i].layer.parameters())[0].detach().cpu().numpy()
