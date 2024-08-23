@@ -6,7 +6,7 @@ import torchvision.transforms as transformers
 
 def dataloader(dataset, mode, index, batchsize, config):
     '''
-    :param dataset: MNIST or CIFAR10
+    :param dataset: MNIST or CIFAR10 or CelebA
     :param mode: Train or reconstruction.
     :param index: Pick up a specific image.
     :param batchsize: Size of mini-batch.
@@ -20,6 +20,9 @@ def dataloader(dataset, mode, index, batchsize, config):
     elif dataset.lower() == "mnist":
         trainset = torchvision.datasets.MNIST(root=path, train=True, download=True)
         testset = torchvision.datasets.MNIST(root=path, train=False, download=True)
+    elif dataset.lower() == "celeba":
+        trainset = torchvision.datasets.CelebA(root=path, train=True, download=True)
+        testset = torchvision.datasets.CelebA(root=path, train=False, download=True)
     else:
         raise ValueError("Unknown dataset.")
 
