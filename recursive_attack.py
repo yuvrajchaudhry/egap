@@ -7,6 +7,7 @@ from scipy.optimize import differential_evolution
 setup = {'device': 'cpu', 'dtype': torch.float32}
 
 
+# Original Version
 def logistic_loss(y, pred):
     y = torch.tensor(y).to(**setup)
     pred = torch.squeeze(pred, -1)
@@ -42,7 +43,7 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds for u (you can adjust these bounds as needed)
-    bounds = [(-5, 5)]  # Example bounds; adjust as necessary
+    bounds = [(-1, 1)]  # Example bounds; adjust as necessary
 
     # Perform Differential Evolution optimization
     result = differential_evolution(objective, bounds)

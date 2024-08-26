@@ -22,6 +22,18 @@ def logistic_loss(target, inputs):
     pred = torch.squeeze(m(inputs), -1)
     return torch.mean(-(target*torch.log(pred)+(1-target)*torch.log(1-pred)))
 
+def hinge_loss(target, inputs):
+    m = nn.Sigmoid()
+    pred = torch.squeeze(m(inputs), -1)
+    loss = torch.max(1 - target * pred, torch.tensor(0.0))
+    return torch.mean(loss)
+
+def exponential_loss(target, inputs):
+    m = nn.Sigmoid()
+    pred = torch.squeeze(m(inputs), -1)
+    loss = torch.exp(-target * pred)
+    return torch.mean(loss)
+
 
 def weight_init(m):
     '''
