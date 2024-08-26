@@ -21,8 +21,8 @@ def dataloader(dataset, mode, index, batchsize, config):
         trainset = torchvision.datasets.MNIST(root=path, train=True, download=True)
         testset = torchvision.datasets.MNIST(root=path, train=False, download=True)
     elif dataset.lower() == "celeba":
-        trainset = torchvision.datasets.CelebA(root=path, train=True, download=True)
-        testset = torchvision.datasets.CelebA(root=path, train=False, download=True)
+        trainset = torchvision.datasets.CelebA(root=path, split='train', download=True)
+        testset = torchvision.datasets.CelebA(root=path, split='test', download=True)
     else:
         raise ValueError("Unknown dataset.")
 
