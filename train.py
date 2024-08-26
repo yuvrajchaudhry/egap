@@ -11,7 +11,7 @@ from models import CNN6, CNN6d
 with open("config.yaml", 'r') as stream:
     config = yaml.safe_load(stream)
 parser = argparse.ArgumentParser(description="Please input model related arguments here. For more meta arguments please check CONFIG file.")
-parser.add_argument("-d", "--dataset", help="Choose the data source.", choices=["CIFAR10", "CIFAR100", "MNIST", "FashionMNIST"], default="FashionMNIST")
+parser.add_argument("-d", "--dataset", help="Choose the data source.", choices=["CIFAR10", "CIFAR100", "MNIST", "FashionMNIST", 'CelebA'], default="CelebA")
 parser.add_argument("-b", "--batchsize", default=5, help="Mini-batch size", type=int)
 parser.add_argument("-a", "--augmentation", type=bool, default=False, help="Data augmentation")
 parser.add_argument("-e", "--epoch", help="Training epoches.", default=5, type=int)
