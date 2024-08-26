@@ -35,7 +35,7 @@ def main():
         net = CNN6d().to(**setup).eval()
     else:
         net = FCN3().to(**setup).eval()
-    pred_loss_fn = logistic_loss
+    pred_loss_fn = hinge_loss
 
     tt = torchvision.transforms.ToTensor()
     tp = torchvision.transforms.ToPILImage()

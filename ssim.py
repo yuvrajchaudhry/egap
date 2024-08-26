@@ -11,11 +11,11 @@ def mse(imageA, imageB):
 
 
 def compare_images(imageA, imageB, title):
-    m = mse(imageA, imageB)
     s = ssim(imageA, imageB)
+    m = mse(imageA, imageB)
 
     fig = plt.figure(title)
-    plt.suptitle("MSE: %.2f, SSIM: %.2f" % (m, s))
+    plt.suptitle("SSIM: %.2f, MSE: %.2f" % (s,m))
 
     ax = fig.add_subplot(1, 2, 1)
     plt.imshow(imageA, cmap=plt.cm.gray)
@@ -29,8 +29,8 @@ def compare_images(imageA, imageB, title):
 
 
 # Loading the images - Original, R-Gap Version, Evol-RGap version
-original = cv2.imread("images_compare/evol0.png")
-rgapimg = cv2.imread("images_compare/evol0re.png")
+original = cv2.imread("images_compare/evol387.png")
+rgapimg = cv2.imread("images_compare/evol387re.png")
 evolimg = cv2.imread("images_compare/rescale_reconstructed.png")
 
 # Converting to Grayscale
