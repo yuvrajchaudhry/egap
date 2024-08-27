@@ -3,6 +3,7 @@ from conv2circulant import *
 import torch
 import numpy as np
 import scipy.optimize as opt
+import matplotlib.pyplot as plt
 from scipy.optimize import differential_evolution
 from torch.optim import LBFGS
 from torch.optim import Adam
@@ -13,7 +14,7 @@ setup = {'device': 'cpu', 'dtype': torch.float32}
 
 
 def inverse_udldu(udldu):
-    '''derive u from udldu using Differential Evolution method'''
+    '''Derive u from udldu using Differential Evolution method and plot the optimization process.'''
     udldu = torch.tensor(udldu).to(**setup)
 
     def objective_quantile(u, quantile=0.5):
@@ -23,24 +24,43 @@ def inverse_udldu(udldu):
                                     (1 - quantile - (udldu_ - udldu) > 0) * (1 - quantile - (udldu_ - udldu)))).item()
         return loss
 
-    # Define bounds for u (you can adjust these bounds as needed)
-    bounds = [(-1, 1)]  # Example bounds; adjust as necessary
+    # Define bounds to -100 and 100
+    bounds = [(-100, 100)]  # Adjusted bounds
+
     iteration_count = 0
-    min_iterations = 100
+    min_iterations = 10
+    max_iterations = 100
+
+    # Initialize the plot
+    fig, ax = plt.subplots()
+    ax.set_xlim(bounds[0])
+    ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
 
     def callback_function(xk, convergence):
         nonlocal iteration_count
         iteration_count += 1
         print(f"Iteration: {iteration_count}")
 
-        # Prevent stopping before min_iterations
-        if iteration_count < min_iterations:
-            return False  # Continue optimization
-        else:
-            return True  # Allow stopping based on convergence
+        # Update the plot with the best solution
+        ax.clear()
+        ax.set_xlim(bounds[0])
+        ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
+        ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+        ax.legend()
+        plt.pause(0.1)
 
-    # Perform Differential Evolution optimization
-    result = differential_evolution(objective_quantile, bounds, popsize=7, callback=callback_function, maxiter=1000)
+        # Print convergence status
+        if convergence:
+            print(f"Convergence reached at iteration {iteration_count}")
+            return True  # Stop the optimization if convergence is detected
+        elif iteration_count >= min_iterations:
+            return True  # Stop based on iteration count if convergence has not been reached
+
+        return False  # Continue optimization
+
+    # Perform Differential Evolution optimization with updated population size
+    result = differential_evolution(objective_quantile, bounds, popsize=100, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
+
     u_optimized = result.x[0]
 
     # Calculate the final predicted udldu
@@ -48,12 +68,14 @@ def inverse_udldu(udldu):
     udldu_ = -u / (1 + torch.exp(u))
 
     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
-
-    # Print the total number of iterations after completion
+    print(f"Optimal solution: {u_optimized}")
+    print(f"Bounds used: {bounds}")
     print(f"Total number of iterations performed: {result.nit}")
 
-    return u_optimized
+    # Final plot display
+    plt.show()
 
+    return u_optimized
 
 def peeling(in_shape, padding):
     if padding == 0:
