@@ -2,17 +2,21 @@ from utils import *
 from conv2circulant import *
 import torch
 import numpy as np
+import scipy.optimize as opt
 from scipy.optimize import differential_evolution
+from torch.optim import LBFGS
+from torch.optim import Adam
+from torch.optim import SGD
+from torch.optim import Adamax
 
 setup = {'device': 'cpu', 'dtype': torch.float32}
 
 
 # Original Version
-def logistic_loss(y, pred):
-    y = torch.tensor(y).to(**setup)
-    pred = torch.squeeze(pred, -1)
-    return torch.mean(-(y*torch.log(pred)+(1-y)*torch.log(1-pred)))
-
+# def logistic_loss(y, pred):
+#     y = torch.tensor(y).to(**setup)
+#     pred = torch.squeeze(pred, -1)
+#     return torch.mean(-(y*torch.log(pred)+(1-y)*torch.log(1-pred)))
 
 # def inverse_udldu(udldu):
 #     '''derive u from udldu using gradient descend based method'''
@@ -55,6 +59,192 @@ def inverse_udldu(udldu):
 
     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
     return u_optimized
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using LBFGS method'''
+#     udldu = torch.tensor(udldu).to(**setup)
+#
+#     # Define the objective function for LBFGS
+#     def objective(u):
+#         u = torch.tensor(u).to(**setup)
+#         udldu_ = -u / (1 + torch.exp(u))
+#         loss = torch.mean((udldu_ - udldu) ** 2).item()
+#         return loss
+#
+#     # Initial guess for u
+#     u_init = 0.0  # Adjust initial guess as needed
+#
+#     # Perform LBFGS optimization
+#     result = opt.minimize(objective, x0=u_init, method='L-BFGS-B')
+#     u_optimized = result.x[0]
+#
+#     # Calculate the final predicted udldu
+#     u = torch.tensor(u_optimized).to(**setup)
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u_optimized
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using Adam optimizer'''
+#     udldu = torch.tensor(udldu).to(**setup)
+#
+#     # Initialize u as a tensor with random values
+#     u = torch.randn(1, requires_grad=True).to(**setup)
+#
+#     # Define the optimizer
+#     optimizer = torch.optim.Adam([u], lr=0.01)  # Adjust learning rate as needed
+#
+#     # Set the number of epochs for training
+#     num_epochs = 1000  # Adjust as needed
+#
+#     for epoch in range(num_epochs):
+#         # Calculate the predicted udldu
+#         udldu_ = -u / (1 + torch.exp(u))
+#
+#         # Compute the loss
+#         loss = torch.mean((udldu_ - udldu) ** 2)
+#
+#         # Backpropagate the gradients
+#         optimizer.zero_grad()
+#         loss.backward()
+#
+#         # Update the parameters using Adam
+#         optimizer.step()
+#
+#     # Calculate the final predicted udldu
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u.item()
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using RMSProp optimizer'''
+#     udldu = torch.tensor(udldu).to(**setup)
+#
+#     # Initialize u as a tensor with random values
+#     u = torch.randn(1, requires_grad=True).to(**setup)
+#
+#     # Define the optimizer
+#     optimizer = torch.optim.RMSprop([u], lr=0.01)  # Adjust learning rate as needed
+#
+#     # Set the number of epochs for training
+#     num_epochs = 1000  # Adjust as needed
+#
+#     for epoch in range(num_epochs):
+#         # Calculate the predicted udldu
+#         udldu_ = -u / (1 + torch.exp(u))
+#
+#         # Compute the loss
+#         loss = torch.mean((udldu_ - udldu) ** 2)
+#
+#         # Backpropagate the gradients
+#         optimizer.zero_grad()
+#         loss.backward()
+#
+#         # Update the parameters using RMSProp
+#         optimizer.step()
+#
+#     # Calculate the final predicted udldu
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u.item()
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using Momentum optimizer'''
+#     udldu = torch.tensor(udldu).to(**setup)
+#
+#     # Initialize u as a tensor with random values
+#     u = torch.randn(1, requires_grad=True).to(**setup)
+#
+#     # Define the optimizer
+#     optimizer = torch.optim.SGD([u], lr=0.01, momentum=0.9)  # Adjust learning rate and momentum as needed
+#
+#     # Set the number of epochs for training
+#     num_epochs = 1000  # Adjust as needed
+#
+#     for epoch in range(num_epochs):
+#         # Calculate the predicted udldu
+#         udldu_ = -u / (1 + torch.exp(u))
+#
+#         # Compute the loss
+#         loss = torch.mean((udldu_ - udldu) ** 2)
+#
+#         # Backpropagate the gradients
+#         optimizer.zero_grad()
+#         loss.backward()
+#
+#         # Update the parameters using Momentum
+#         optimizer.step()
+#
+#     # Calculate the final predicted udldu
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u.item()
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using Nesterov Accelerated Gradient (NAG) method'''
+#     # Learning rate and initial values
+#     lr = 0.01
+#     momentum = 0.9  # Momentum parameter for NAG
+#
+#     # Convert input to tensor and set up for gradient computation
+#     u = torch.tensor(0.0, dtype=torch.float32, requires_grad=True).to(**setup)
+#     udldu = torch.tensor(udldu, dtype=torch.float32).to(**setup)
+#
+#     # Define the optimizer with Nesterov Accelerated Gradient (NAG)
+#     optimizer = SGD([u], lr=lr, momentum=momentum, nesterov=True)
+#
+#     # Define the loss function
+#     loss_fn = nn.MSELoss()
+#
+#     # Optimization loop
+#     num_iterations = 30000  # Number of iterations; adjust as necessary
+#     for _ in range(num_iterations):
+#         optimizer.zero_grad()  # Clear previous gradients
+#         udldu_ = -u / (1 + torch.exp(u))  # Compute the forward pass
+#         loss = loss_fn(udldu_, udldu)  # Compute the loss
+#         loss.backward()  # Compute gradients
+#         optimizer.step()  # Update parameters
+#
+#     # Final prediction and error calculation
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u.detach().numpy()
+
+
+# def inverse_udldu(udldu):
+#     '''derive u from udldu using AdaMax optimization method'''
+#     # Learning rate and initial values
+#     lr = 0.01
+#
+#     # Convert input to tensor and set up for gradient computation
+#     u = torch.tensor(0.0, dtype=torch.float32, requires_grad=True).to(**setup)
+#     udldu = torch.tensor(udldu, dtype=torch.float32).to(**setup)
+#
+#     # Define the optimizer with AdaMax
+#     optimizer = Adamax([u], lr=lr)
+#
+#     # Define the loss function
+#     loss_fn = nn.MSELoss()
+#
+#     # Optimization loop
+#     num_iterations = 30000  # Number of iterations; adjust as necessary
+#     for _ in range(num_iterations):
+#         optimizer.zero_grad()  # Clear previous gradients
+#         udldu_ = -u / (1 + torch.exp(u))  # Compute the forward pass
+#         loss = loss_fn(udldu_, udldu)  # Compute the loss
+#         loss.backward()  # Compute gradients
+#         optimizer.step()  # Update parameters
+#
+#     # Final prediction and error calculation
+#     udldu_ = -u / (1 + torch.exp(u))
+#
+#     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+#     return u.detach().numpy()
 
 
 def peeling(in_shape, padding):

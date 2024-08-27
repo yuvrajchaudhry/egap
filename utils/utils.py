@@ -34,6 +34,24 @@ def exponential_loss(target, inputs):
     loss = torch.exp(-target * pred)
     return torch.mean(loss)
 
+def cross_entropy_loss(target, inputs):
+    m = nn.Sigmoid()
+    loss_fn = nn.BCELoss()
+    pred = torch.squeeze(m(inputs), -1)
+    return loss_fn(pred, target)
+
+def binary_cross_entropy_loss(target, inputs):
+    m = nn.Sigmoid()  # Sigmoid activation function
+    loss_fn = nn.BCELoss()  # Binary Cross Entropy Loss
+    pred = torch.squeeze(m(inputs), -1)  # Apply sigmoid and remove extra dimensions
+    return loss_fn(pred, target)
+
+def mse_loss(target, inputs):
+    m = nn.Sigmoid()  # Sigmoid activation function
+    loss_fn = nn.MSELoss()  # Mean Squared Error Loss
+    pred = torch.squeeze(m(inputs), -1)  # Apply sigmoid and remove extra dimensions
+    return loss_fn(pred, target)
+
 
 def weight_init(m):
     '''
