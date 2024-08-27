@@ -46,11 +46,44 @@ def inverse_udldu(udldu):
         loss = torch.mean((udldu_ - udldu) ** 2).item()
         return loss
 
+    def objective_mae(u):
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.mean(torch.abs(udldu_ - udldu)).item()
+        return loss
+
+    def objective_huber(u, delta=1.0):
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.mean(torch.where(torch.abs(udldu_ - udldu) < delta,
+                                      0.5 * (udldu_ - udldu) ** 2,
+                                      delta * torch.abs(udldu_ - udldu) - 0.5 * delta)).item()
+        return loss
+
+    def objective_log_cosh(u):
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.mean(torch.log(torch.cosh(udldu_ - udldu))).item()
+        return loss
+
+    def objective_quantile(u, quantile=0.5):
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.mean(torch.max((quantile - (udldu_ - udldu) < 0) * (quantile - (udldu_ - udldu)),
+                                    (1 - quantile - (udldu_ - udldu) > 0) * (1 - quantile - (udldu_ - udldu)))).item()
+        return loss
+
+    def objective_chebyshev(u):
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.max(torch.abs(udldu_ - udldu)).item()
+        return loss
+
     # Define bounds for u (you can adjust these bounds as needed)
     bounds = [(-1, 1)]  # Example bounds; adjust as necessary
 
     # Perform Differential Evolution optimization
-    result = differential_evolution(objective, bounds)
+    result = differential_evolution(objective_quantile, bounds, popsize=7)
     u_optimized = result.x[0]
 
     # Calculate the final predicted udldu
