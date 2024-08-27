@@ -35,7 +35,7 @@ def main():
         net = CNN6d().to(**setup).eval()
     else:
         net = FCN3().to(**setup).eval()
-    pred_loss_fn = logistic_loss
+    pred_loss_fn = hinge_loss
 
     tt = torchvision.transforms.ToTensor()
     tp = torchvision.transforms.ToPILImage()
@@ -71,7 +71,7 @@ def main():
     last_weight = []
 
     print('****************')
-    print('perform R-GAP')
+    print('Performing Evolved R-GAP')
     print('****************')
     for i in range(len(modules)):
         g = original_dy_dx[i].numpy()
@@ -84,7 +84,7 @@ def main():
             y = np.array([-1 if n == 0 else n for n in y], dtype=np.float32).reshape(-1, 1)
             y = y.mean() if y.mean() != 0 else 0.1
 
-            print(f'pred_: {u/y:.1e}, udldu: {udldu:.1e}, udldu_:{-u/(1+np.exp(u)):.1e}')
+            print(f'Prediction_: {u/y:.1e}, udldu: {udldu:.1e}, udldu_:{-u/(1+np.exp(u)):.1e}')
             k = -y/(1+np.exp(u))
             k = k.reshape(1, -1).astype(np.float32)
 
