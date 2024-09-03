@@ -25,43 +25,108 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds to -100 and 100
-    bounds = [(-100, 100)]  # Adjusted bounds
+    bounds = [(-10, 10)]  # Adjusted bounds
 
     iteration_count = 0
     min_iterations = 10
     max_iterations = 100
+    convergence_iteration = None
 
     # Initialize the plot
     fig, ax = plt.subplots()
     ax.set_xlim(bounds[0])
     ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
 
+    all_solutions = []
+    all_objectives = []
+
+    best_solution = None
+    best_objective = float('inf')
+
     def callback_function(xk, convergence):
-        nonlocal iteration_count
+        nonlocal iteration_count, convergence_iteration, best_solution, best_objective
         iteration_count += 1
-        print(f"Iteration: {iteration_count}")
+        # print(f"Iteration: {iteration_count}")
+        current_objective = objective_quantile(xk)
+        print(f"Iteration: {iteration_count}, Current Solution: {xk[0]}, Objective Value: {current_objective}")
+
+        all_solutions.append(xk[0])
+        all_objectives.append(current_objective)
+
+        # Update the best solution if current one is better
+        if current_objective < best_objective:
+            best_solution = xk
+            best_objective = current_objective
+
 
         # Update the plot with the best solution
         ax.clear()
         ax.set_xlim(bounds[0])
-        ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
-        ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+        ax.set_ylim([-100, 100])  # Adjust as necessary for your specific problem
+        # ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+        #ax.scatter(xk[0], current_objective, color='red', label='Best Solution')
+        if all_solutions:
+            ax.scatter(all_solutions, all_objectives, color='blue', label='All Solutions')
+        if best_solution is not None:
+            ax.scatter(best_solution[0], best_objective, color='red', label='Best Solution')
         ax.legend()
-        plt.pause(0.1)
+        plt.draw()
+        #plt.pause(0.1)
 
-        # Print convergence status
-        if convergence:
-            print(f"Convergence reached at iteration {iteration_count}")
-            return True  # Stop the optimization if convergence is detected
-        elif iteration_count >= min_iterations:
-            return True  # Stop based on iteration count if convergence has not been reached
+        # Record the iteration at which convergence was found
+        if convergence and convergence_iteration is None:
+            convergence_iteration = iteration_count
+            print(f"Convergence detected at iteration {iteration_count}")
 
-        return False  # Continue optimization
+        # Ensure the loop runs for at least `min_iterations`
+        if iteration_count < min_iterations:
+            return False  # Continue optimization
+
+        # Stop condition
+        if convergence or iteration_count >= max_iterations:
+            if convergence:
+                print(f"Stopping optimization at iteration {iteration_count} as convergence was already detected at {convergence_iteration}")
+            else:
+                print(f"Maximum iterations exceeded {iteration_count}")
+            return True  # Stop the optimization
+
+        return False
+
+        # def callback_function(xk, convergence):
+    #     nonlocal iteration_count
+    #     iteration_count += 1
+    #     print(f"Iteration: {iteration_count}")
+    #
+    #     # Update the plot with the best solution
+    #     ax.clear()
+    #     ax.set_xlim(bounds[0])
+    #     ax.set_ylim([-100, 100])  # Adjust as necessary for your specific problem
+    #     ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+    #     ax.legend()
+    #     plt.pause(0.1)
+    #
+    #     # Print convergence status
+    #     if convergence:
+    #         print(f"Convergence reached at iteration {iteration_count}")
+    #         return True  # Stop the optimization if convergence is detected
+    #     elif iteration_count >= min_iterations:
+    #         return True  # Stop based on iteration count if convergence has not been reached
+    #
+    #     return False  # Continue optimization
 
     # Perform Differential Evolution optimization with updated population size
-    result = differential_evolution(objective_quantile, bounds, popsize=100, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
+    # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
+    while iteration_count < min_iterations:
+        result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function,
+                                        maxiter=max_iterations, polish=False, init='latinhypercube',
+                                        updating='deferred')
+        if result.success and iteration_count >= min_iterations:
+            best_solution = result.x
+            best_objective = result.fun
+            break
 
-    u_optimized = result.x[0]
+    #u_optimized = result.x[0]
+    u_optimized = best_solution[0]
 
     # Calculate the final predicted udldu
     u = torch.tensor(u_optimized).to(**setup)
@@ -70,10 +135,14 @@ def inverse_udldu(udldu):
     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
     print(f"Optimal solution: {u_optimized}")
     print(f"Bounds used: {bounds}")
-    print(f"Total number of iterations performed: {result.nit}")
+    print(f"Total number of iterations performed: {iteration_count}")
+    print(f"Total number of iterations required: {result.nit}")
 
     # Final plot display
-    plt.show()
+    # plt.show()
+    save_path= "Plots/Img-5.png"
+    plt.savefig(save_path)
+    print(f"Plot saved as: {save_path}")
 
     return u_optimized
 

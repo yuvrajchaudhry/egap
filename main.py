@@ -4,6 +4,7 @@ import os
 import yaml
 import matplotlib.pyplot as plt
 import time
+import logging
 from utils import *
 from models import CNN6, CNN6d, FCN3
 from recursive_attack import r_gap, peeling, fcn_reconstruction, inverse_udldu
@@ -23,6 +24,10 @@ print(f'Running on {setup["device"]}, PyTorch version {torch.__version__}')
 
 
 start_time = time.time()
+
+# Configure logging
+logging.basicConfig(filename='Plots/output.txt', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 def main():
     train_sample, test_sample = dataloader(dataset=args.dataset, mode="attack", index=args.index,
                                            batchsize=args.batchsize, config=config)
