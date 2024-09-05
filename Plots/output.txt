@@ -1,0 +1,43 @@
+Running on cpu, PyTorch version 2.3.1+cu121
+Files already downloaded and verified
+Files already downloaded and verified
+pred: [[-0.00068378]], y: tensor([1.])
+****************
+Performing Evolved R-GAP
+****************
+Iteration: 1, Current Solution: -0.8902372992145351, Objective Value: 0.0
+Convergence detected at iteration 1
+Iteration: 2, Current Solution: -0.8902372992145351, Objective Value: 0.0
+Iteration: 3, Current Solution: -0.8902372992145351, Objective Value: 0.0
+Iteration: 4, Current Solution: -0.8902372992145351, Objective Value: 0.0
+Iteration: 5, Current Solution: -0.8426647662082845, Objective Value: 0.0
+Iteration: 6, Current Solution: -0.9834056504687608, Objective Value: 0.0
+Iteration: 7, Current Solution: -0.9834056504687608, Objective Value: 0.0
+Iteration: 8, Current Solution: -0.9834056504687608, Objective Value: 0.0
+Iteration: 9, Current Solution: -0.8095396049382294, Objective Value: 0.0
+Iteration: 10, Current Solution: -0.8393927087478207, Objective Value: 0.0
+Iteration: 11, Current Solution: -0.7480004497145913, Objective Value: 0.0
+Iteration: 12, Current Solution: -0.8756669127093484, Objective Value: 0.0
+Iteration: 13, Current Solution: -0.8756669127093484, Objective Value: 0.0
+Iteration: 14, Current Solution: -0.9119672754136134, Objective Value: 0.0
+Iteration: 15, Current Solution: -0.8272743264802851, Objective Value: 0.0
+Iteration: 16, Current Solution: -0.8069799245935639, Objective Value: 0.0
+Iteration: 17, Current Solution: -0.7953663682248115, Objective Value: 0.0
+Iteration: 18, Current Solution: -0.9959603941598216, Objective Value: 0.0
+Iteration: 19, Current Solution: -0.9959603941598216, Objective Value: 0.0
+Iteration: 20, Current Solution: -0.9051313013650025, Objective Value: 0.0
+Stopping optimization at iteration 20 as convergence was already detected at 1
+The error term of inversing udldu: -6.3e-01
+Optimal solution: -0.8902372992145351
+Bounds used: [(-1, 1)]
+Total number of iterations performed: 20
+Total number of iterations required: 4
+Plot saved as: Plots/Img-5.png
+Prediction_: -8.9e-01, udldu: 1.7e-04, udldu_:6.3e-01
+lstsq residual: [3.70081e-17], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.32e-01
+lstsq residual: [2.2160536e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/9.83e-03
+lstsq residual: [1.0181599e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/1.13e-02
+lstsq residual: [4.6693127e-12], rank: 4356 -> 4356, max/min singular value: 1.25e+00/4.81e-03
+lstsq residual: [2.3836998e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/2.32e-04
+lstsq residual: [0.00016417], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
+--- 120.91259765625 seconds ---

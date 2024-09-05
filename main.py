@@ -4,6 +4,7 @@ import os
 import yaml
 import matplotlib.pyplot as plt
 import time
+import sys
 import logging
 from utils import *
 from models import CNN6, CNN6d, FCN3
@@ -20,13 +21,46 @@ parser.add_argument("-m", "--model", help="Network architecture.", choices=["CNN
 args = parser.parse_args()
 setup = {'device': 'cpu', 'dtype': torch.float32}
 #setup = {'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'), 'dtype': torch.float32}
+
+class DualStreamHandler:
+    def __init__(self, file_path):
+        self.file = open(file_path, 'w')
+        self.terminal = sys.stdout
+
+    def write(self, message):
+        # Write to the terminal
+        self.terminal.write(message)
+        self.terminal.flush()  # Ensure it's immediately written to the terminal
+
+        # Write to the log file
+        self.file.write(message)
+        self.file.flush()  # Ensure it's immediately written to the file
+
+    def flush(self):
+        # Flush both streams
+        self.terminal.flush()
+        self.file.flush()
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger()
+
+# Create and install the custom handler
+log_file_path = 'Plots/output.txt'
+dual_handler = DualStreamHandler(log_file_path)
+sys.stdout = dual_handler
+
+# Your program starts here
+with open("config.yaml", 'r') as stream:
+    config = yaml.safe_load(stream)
+
 print(f'Running on {setup["device"]}, PyTorch version {torch.__version__}')
 
 
 start_time = time.time()
-
-# Configure logging
-logging.basicConfig(filename='Plots/output.txt', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def main():
     train_sample, test_sample = dataloader(dataset=args.dataset, mode="attack", index=args.index,
@@ -151,3 +185,7 @@ if __name__ == "__main__":
     main()
 
 print("--- %s seconds ---" % (time.time()- start_time))
+
+# Reset stdout to terminal and close the log file at the end
+sys.stdout = sys.__stdout__
+dual_handler.file.close()

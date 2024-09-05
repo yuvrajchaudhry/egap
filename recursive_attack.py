@@ -25,11 +25,11 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds to -100 and 100
-    bounds = [(-10, 10)]  # Adjusted bounds
+    bounds = [(-1, 1)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 10
-    max_iterations = 100
+    min_iterations = 20
+    max_iterations = 1000
     convergence_iteration = None
 
     # Initialize the plot
@@ -42,9 +42,10 @@ def inverse_udldu(udldu):
 
     best_solution = None
     best_objective = float('inf')
+    best_solution_value = float('inf')  # Track the best solution based on value
 
     def callback_function(xk, convergence):
-        nonlocal iteration_count, convergence_iteration, best_solution, best_objective
+        nonlocal iteration_count, convergence_iteration, best_solution, best_objective, best_solution_value
         iteration_count += 1
         # print(f"Iteration: {iteration_count}")
         current_objective = objective_quantile(xk)
@@ -57,6 +58,13 @@ def inverse_udldu(udldu):
         if current_objective < best_objective:
             best_solution = xk
             best_objective = current_objective
+
+        # Update the best solution based on the current solution's absolute value
+        # In this approach the reconstructed image is better than the other approach (loss comparision), however it is worse after rescaling
+        # if abs(xk[0]) < best_solution_value:
+        #     best_solution = xk
+        #     best_solution_value = abs(xk[0])
+        #     best_objective = current_objective
 
 
         # Update the plot with the best solution
@@ -92,27 +100,6 @@ def inverse_udldu(udldu):
 
         return False
 
-        # def callback_function(xk, convergence):
-    #     nonlocal iteration_count
-    #     iteration_count += 1
-    #     print(f"Iteration: {iteration_count}")
-    #
-    #     # Update the plot with the best solution
-    #     ax.clear()
-    #     ax.set_xlim(bounds[0])
-    #     ax.set_ylim([-100, 100])  # Adjust as necessary for your specific problem
-    #     ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
-    #     ax.legend()
-    #     plt.pause(0.1)
-    #
-    #     # Print convergence status
-    #     if convergence:
-    #         print(f"Convergence reached at iteration {iteration_count}")
-    #         return True  # Stop the optimization if convergence is detected
-    #     elif iteration_count >= min_iterations:
-    #         return True  # Stop based on iteration count if convergence has not been reached
-    #
-    #     return False  # Continue optimization
 
     # Perform Differential Evolution optimization with updated population size
     # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
@@ -145,6 +132,28 @@ def inverse_udldu(udldu):
     print(f"Plot saved as: {save_path}")
 
     return u_optimized
+
+       # def callback_function(xk, convergence):
+    #     nonlocal iteration_count
+    #     iteration_count += 1
+    #     print(f"Iteration: {iteration_count}")
+    #
+    #     # Update the plot with the best solution
+    #     ax.clear()
+    #     ax.set_xlim(bounds[0])
+    #     ax.set_ylim([-100, 100])  # Adjust as necessary for your specific problem
+    #     ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+    #     ax.legend()
+    #     plt.pause(0.1)
+    #
+    #     # Print convergence status
+    #     if convergence:
+    #         print(f"Convergence reached at iteration {iteration_count}")
+    #         return True  # Stop the optimization if convergence is detected
+    #     elif iteration_count >= min_iterations:
+    #         return True  # Stop based on iteration count if convergence has not been reached
+    #
+    #     return False  # Continue optimization
 
 def peeling(in_shape, padding):
     if padding == 0:
