@@ -5,39 +5,59 @@ pred: [[-0.00068378]], y: tensor([1.])
 ****************
 Performing Evolved R-GAP
 ****************
-Iteration: 1, Current Solution: -0.8902372992145351, Objective Value: 0.0
+Iteration: 1, Current Solution: -88.24650418683918, Objective Value: 0.0
 Convergence detected at iteration 1
-Iteration: 2, Current Solution: -0.8902372992145351, Objective Value: 0.0
-Iteration: 3, Current Solution: -0.8902372992145351, Objective Value: 0.0
-Iteration: 4, Current Solution: -0.8902372992145351, Objective Value: 0.0
-Iteration: 5, Current Solution: -0.8426647662082845, Objective Value: 0.0
-Iteration: 6, Current Solution: -0.9834056504687608, Objective Value: 0.0
-Iteration: 7, Current Solution: -0.9834056504687608, Objective Value: 0.0
-Iteration: 8, Current Solution: -0.9834056504687608, Objective Value: 0.0
-Iteration: 9, Current Solution: -0.8095396049382294, Objective Value: 0.0
-Iteration: 10, Current Solution: -0.8393927087478207, Objective Value: 0.0
-Iteration: 11, Current Solution: -0.7480004497145913, Objective Value: 0.0
-Iteration: 12, Current Solution: -0.8756669127093484, Objective Value: 0.0
-Iteration: 13, Current Solution: -0.8756669127093484, Objective Value: 0.0
-Iteration: 14, Current Solution: -0.9119672754136134, Objective Value: 0.0
-Iteration: 15, Current Solution: -0.8272743264802851, Objective Value: 0.0
-Iteration: 16, Current Solution: -0.8069799245935639, Objective Value: 0.0
-Iteration: 17, Current Solution: -0.7953663682248115, Objective Value: 0.0
-Iteration: 18, Current Solution: -0.9959603941598216, Objective Value: 0.0
-Iteration: 19, Current Solution: -0.9959603941598216, Objective Value: 0.0
-Iteration: 20, Current Solution: -0.9051313013650025, Objective Value: 0.0
-Stopping optimization at iteration 20 as convergence was already detected at 1
-The error term of inversing udldu: -6.3e-01
-Optimal solution: -0.8902372992145351
-Bounds used: [(-1, 1)]
-Total number of iterations performed: 20
+Iteration: 2, Current Solution: -88.24650418683918, Objective Value: 0.0
+Iteration: 3, Current Solution: -80.84761710881314, Objective Value: 0.0
+Iteration: 4, Current Solution: -9.808956028447247, Objective Value: 0.0
+Iteration: 5, Current Solution: -97.32192471679272, Objective Value: 0.0
+Iteration: 6, Current Solution: -80.93979022038941, Objective Value: 0.0
+Iteration: 7, Current Solution: -90.43568086193055, Objective Value: 0.0
+Iteration: 8, Current Solution: -62.9370058050006, Objective Value: 0.0
+Iteration: 9, Current Solution: -29.620018694458818, Objective Value: 0.0
+Iteration: 10, Current Solution: -29.620018694458818, Objective Value: 0.0
+Iteration: 11, Current Solution: -13.734261029378791, Objective Value: 0.0
+Iteration: 12, Current Solution: -13.734261029378791, Objective Value: 0.0
+Iteration: 13, Current Solution: -19.434353952110715, Objective Value: 0.0
+Iteration: 14, Current Solution: -13.397400875279908, Objective Value: 0.0
+Iteration: 15, Current Solution: -38.78859611093355, Objective Value: 0.0
+Iteration: 16, Current Solution: -58.21035781937896, Objective Value: 0.0
+Iteration: 17, Current Solution: -58.21035781937896, Objective Value: 0.0
+Iteration: 18, Current Solution: -62.97880480628615, Objective Value: 0.0
+Iteration: 19, Current Solution: -61.85611589079316, Objective Value: 0.0
+Iteration: 20, Current Solution: -44.23275168193581, Objective Value: 0.0
+Iteration: 21, Current Solution: -38.03742669694954, Objective Value: 0.0
+Iteration: 22, Current Solution: -61.797466951265555, Objective Value: 0.0
+Iteration: 23, Current Solution: -34.16812997326792, Objective Value: 0.0
+Iteration: 24, Current Solution: -23.15634140419325, Objective Value: 0.0
+Iteration: 25, Current Solution: -23.15634140419325, Objective Value: 0.0
+Iteration: 26, Current Solution: -77.844253708072, Objective Value: 0.0
+Iteration: 27, Current Solution: -39.76561806226473, Objective Value: 0.0
+Iteration: 28, Current Solution: -21.066483258277945, Objective Value: 0.0
+Iteration: 29, Current Solution: -21.677714324492715, Objective Value: 0.0
+Iteration: 30, Current Solution: -11.374947382018362, Objective Value: 0.0
+Iteration: 31, Current Solution: -21.19383397319816, Objective Value: 0.0
+Iteration: 32, Current Solution: -69.46863903613207, Objective Value: 0.0
+Iteration: 33, Current Solution: -96.81646507761823, Objective Value: 0.0
+Iteration: 34, Current Solution: -96.16915035209277, Objective Value: 0.0
+Iteration: 35, Current Solution: -96.16915035209277, Objective Value: 0.0
+Iteration: 36, Current Solution: -96.16915035209277, Objective Value: 0.0
+Iteration: 37, Current Solution: -3.226557649230033, Objective Value: 0.0
+Iteration: 38, Current Solution: -3.226557649230033, Objective Value: 0.0
+Iteration: 39, Current Solution: -11.20129331688987, Objective Value: 0.0
+Iteration: 40, Current Solution: -11.20129331688987, Objective Value: 0.0
+Stopping optimization at iteration 40 as convergence was already detected at 1
+The error term of inversing udldu: -8.8e+01
+Optimal solution: -88.24650418683918
+Bounds used: [(-100, 100)]
+Total number of iterations performed: 40
 Total number of iterations required: 4
 Plot saved as: Plots/Img-5.png
-Prediction_: -8.9e-01, udldu: 1.7e-04, udldu_:6.3e-01
-lstsq residual: [3.70081e-17], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.32e-01
-lstsq residual: [2.2160536e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/9.83e-03
-lstsq residual: [1.0181599e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/1.13e-02
-lstsq residual: [4.6693127e-12], rank: 4356 -> 4356, max/min singular value: 1.25e+00/4.81e-03
-lstsq residual: [2.3836998e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/2.32e-04
-lstsq residual: [0.00016417], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
---- 120.91259765625 seconds ---
+Prediction_: -8.8e+01, udldu: 3.4e-04, udldu_:8.8e+01
+lstsq residual: [8.028816e-17], rank: 3136 -> 3136, max/min singular value: 1.39e+00/2.67e-01
+lstsq residual: [7.502988e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/1.38e-02
+lstsq residual: [2.3036662e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/1.53e-02
+lstsq residual: [7.1659866e-12], rank: 4356 -> 4356, max/min singular value: 1.25e+00/6.66e-03
+lstsq residual: [4.0114443e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/3.27e-04
+lstsq residual: [0.00014126], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
+--- 120.91684103012085 seconds ---

@@ -25,17 +25,17 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds to -100 and 100
-    bounds = [(-1, 1)]  # Adjusted bounds
+    bounds = [(-100, 100)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 20
+    min_iterations = 40
     max_iterations = 1000
     convergence_iteration = None
 
     # Initialize the plot
     fig, ax = plt.subplots()
     ax.set_xlim(bounds[0])
-    ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
+    ax.set_ylim([-5, 5])  # Adjust as necessary for your specific problem
 
     all_solutions = []
     all_objectives = []
@@ -104,7 +104,7 @@ def inverse_udldu(udldu):
     # Perform Differential Evolution optimization with updated population size
     # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
     while iteration_count < min_iterations:
-        result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function,
+        result = differential_evolution(objective_quantile, bounds, popsize=100, callback=callback_function,
                                         maxiter=max_iterations, polish=False, init='latinhypercube',
                                         updating='deferred')
         if result.success and iteration_count >= min_iterations:
