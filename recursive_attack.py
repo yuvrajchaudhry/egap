@@ -25,17 +25,17 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds to -100 and 100
-    bounds = [(-100, 100)]  # Adjusted bounds
+    bounds = [(-1000, 1000)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 40
+    min_iterations = 100
     max_iterations = 1000
     convergence_iteration = None
 
     # Initialize the plot
     fig, ax = plt.subplots()
     ax.set_xlim(bounds[0])
-    ax.set_ylim([-5, 5])  # Adjust as necessary for your specific problem
+    ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
 
     all_solutions = []
     all_objectives = []
