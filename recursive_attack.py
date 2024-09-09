@@ -25,10 +25,10 @@ def inverse_udldu(udldu):
         return loss
 
     # Define bounds to -100 and 100
-    bounds = [(-1000, 1000)]  # Adjusted bounds
+    bounds = [(-1, 1)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 100
+    min_iterations = 20
     max_iterations = 1000
     convergence_iteration = None
 
@@ -104,7 +104,7 @@ def inverse_udldu(udldu):
     # Perform Differential Evolution optimization with updated population size
     # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
     while iteration_count < min_iterations:
-        result = differential_evolution(objective_quantile, bounds, popsize=100, callback=callback_function,
+        result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function,
                                         maxiter=max_iterations, polish=False, init='latinhypercube',
                                         updating='deferred')
         if result.success and iteration_count >= min_iterations:
