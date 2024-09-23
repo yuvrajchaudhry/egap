@@ -30,7 +30,9 @@ def compare_images(imageA, imageB, title):
 
 # Loading the images - Original, R-Gap Version, Evol-RGap version
 original = cv2.imread("images_compare/evol5.png")
-rgapimg = cv2.imread("images_compare/evol52re.png")
+rgapimg = cv2.imread("images_compare/reconstructed.png")
+#rgapimg = cv2.imread("images_compare/rescale_reconstructed.png")
+#evolimg = cv2.imread("images_compare/r.png")
 evolimg = cv2.imread("images_compare/rescale_reconstructed.png")
 
 # Converting to Grayscale

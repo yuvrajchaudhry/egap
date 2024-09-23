@@ -24,11 +24,17 @@ def inverse_udldu(udldu):
                                     (1 - quantile - (udldu_ - udldu) > 0) * (1 - quantile - (udldu_ - udldu)))).item()
         return loss
 
+    # def objective_mse(u):
+    #     u = torch.tensor(u).to(**setup)
+    #     udldu_ = -u / (1 + torch.exp(u))
+    #     loss = torch.mean((udldu_ - udldu) ** 2).item()
+    #     return loss
+
     # Define bounds to -100 and 100
-    bounds = [(-1000, 1000)]  # Adjusted bounds
+    bounds = [(-1, 1)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 100
+    min_iterations = 50
     max_iterations = 1000
     convergence_iteration = None
 
@@ -49,6 +55,7 @@ def inverse_udldu(udldu):
         iteration_count += 1
         # print(f"Iteration: {iteration_count}")
         current_objective = objective_quantile(xk)
+        #current_objective = objective_mse(xk)
         print(f"Iteration: {iteration_count}, Current Solution: {xk[0]}, Objective Value: {current_objective}")
 
         all_solutions.append(xk[0])
@@ -104,9 +111,12 @@ def inverse_udldu(udldu):
     # Perform Differential Evolution optimization with updated population size
     # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function, maxiter=max_iterations, polish=False, init='latinhypercube', updating='deferred')
     while iteration_count < min_iterations:
-        result = differential_evolution(objective_quantile, bounds, popsize=100, callback=callback_function,
+        result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function,
                                         maxiter=max_iterations, polish=False, init='latinhypercube',
                                         updating='deferred')
+        # result = differential_evolution(objective_mse, bounds, popsize=10, callback=callback_function,
+        #                                 maxiter=max_iterations, polish=False, init='latinhypercube',
+        #                                 updating='deferred')
         if result.success and iteration_count >= min_iterations:
             best_solution = result.x
             best_objective = result.fun
