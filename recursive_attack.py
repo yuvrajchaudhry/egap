@@ -34,7 +34,7 @@ def inverse_udldu(udldu):
     bounds = [(-1, 1)]  # Adjusted bounds
 
     iteration_count = 0
-    min_iterations = 50
+    min_iterations = 100
     max_iterations = 1000
     convergence_iteration = None
 
@@ -46,12 +46,13 @@ def inverse_udldu(udldu):
     all_solutions = []
     all_objectives = []
 
-    best_solution = None
+    best_solution = float('inf')
     best_objective = float('inf')
     best_solution_value = float('inf')  # Track the best solution based on value
+    best_solution_iteration = None
 
     def callback_function(xk, convergence):
-        nonlocal iteration_count, convergence_iteration, best_solution, best_objective, best_solution_value
+        nonlocal iteration_count, convergence_iteration, best_solution, best_objective, best_solution_value,best_solution_iteration
         iteration_count += 1
         # print(f"Iteration: {iteration_count}")
         #current_objective = objective_quantile(xk)
@@ -62,9 +63,15 @@ def inverse_udldu(udldu):
         all_objectives.append(current_objective)
 
         # Update the best solution if current one is better
+        # if current_objective < best_objective:
+        #     best_solution = xk
+        #     best_objective = current_objective
+
         if current_objective < best_objective:
             best_solution = xk
             best_objective = current_objective
+            best_solution_iteration = iteration_count
+            print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
 
         # Update the best solution based on the current solution's absolute value
         # In this approach the reconstructed image is better than the other approach (loss comparision), however it is worse after rescaling
@@ -72,6 +79,7 @@ def inverse_udldu(udldu):
         #     best_solution = xk
         #     best_solution_value = abs(xk[0])
         #     best_objective = current_objective
+        #     print(f"New best solution found: {best_solution}, with objective value: {best_objective}")
 
 
         # Update the plot with the best solution
@@ -100,7 +108,8 @@ def inverse_udldu(udldu):
         # Stop condition
         if convergence or iteration_count >= max_iterations:
             if convergence:
-                print(f"Stopping optimization at iteration {iteration_count} as convergence was already detected at {convergence_iteration}")
+                #print(f"Stopping optimization at iteration {iteration_count} as minimum iterations are completed. Convergence was already detected at {convergence_iteration}")
+                print(f"Stopping optimization at iteration {iteration_count} as minimum iterations are completed. Best solution detected at {best_solution_iteration}")
             else:
                 print(f"Maximum iterations exceeded {iteration_count}")
             return True  # Stop the optimization
@@ -130,6 +139,8 @@ def inverse_udldu(udldu):
     udldu_ = -u / (1 + torch.exp(u))
 
     print(f"The error term of inversing udldu: {udldu.item() - udldu_.item():.1e}")
+    print(f"Best solution: {best_solution}")
+    print(f"Best objective value: {best_objective}")
     print(f"Optimal solution: {u_optimized}")
     print(f"Bounds used: {bounds}")
     print(f"Total number of iterations performed: {iteration_count}")
