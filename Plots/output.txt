@@ -26,18 +26,48 @@ Iteration: 17, Current Solution: -0.7953663682248115, Objective Value: 0.0
 Iteration: 18, Current Solution: -0.9959603941598216, Objective Value: 0.0
 Iteration: 19, Current Solution: -0.9959603941598216, Objective Value: 0.0
 Iteration: 20, Current Solution: -0.9051313013650025, Objective Value: 0.0
-Stopping optimization at iteration 20 as convergence was already detected at 1
+Iteration: 21, Current Solution: -0.870491912217666, Objective Value: 0.0
+Iteration: 22, Current Solution: -0.9606295890669373, Objective Value: 0.0
+Iteration: 23, Current Solution: -0.9148840671207195, Objective Value: 0.0
+Iteration: 24, Current Solution: -0.9148840671207195, Objective Value: 0.0
+Iteration: 25, Current Solution: -0.9065851013912463, Objective Value: 0.0
+Iteration: 26, Current Solution: -0.9065851013912463, Objective Value: 0.0
+Iteration: 27, Current Solution: -0.8581532472098419, Objective Value: 0.0
+Iteration: 28, Current Solution: -0.8581532472098419, Objective Value: 0.0
+Iteration: 29, Current Solution: -0.8581532472098419, Objective Value: 0.0
+Iteration: 30, Current Solution: -0.7955617076504224, Objective Value: 0.0
+Iteration: 31, Current Solution: -0.7794740855620128, Objective Value: 0.0
+Iteration: 32, Current Solution: -0.7658762749794223, Objective Value: 0.0
+Iteration: 33, Current Solution: -0.7658762749794223, Objective Value: 0.0
+Iteration: 34, Current Solution: -0.8257489231208124, Objective Value: 0.0
+Iteration: 35, Current Solution: -0.9736820392816837, Objective Value: 0.0
+Iteration: 36, Current Solution: -0.9736820392816837, Objective Value: 0.0
+Iteration: 37, Current Solution: -0.9736820392816837, Objective Value: 0.0
+Iteration: 38, Current Solution: -0.8453517933138752, Objective Value: 0.0
+Iteration: 39, Current Solution: -0.8453517933138752, Objective Value: 0.0
+Iteration: 40, Current Solution: -0.8453517933138752, Objective Value: 0.0
+Iteration: 41, Current Solution: -0.7724619783314044, Objective Value: 0.0
+Iteration: 42, Current Solution: -0.7724619783314044, Objective Value: 0.0
+Iteration: 43, Current Solution: -0.9815363515459977, Objective Value: 0.0
+Iteration: 44, Current Solution: -0.9951729209910493, Objective Value: 0.0
+Iteration: 45, Current Solution: -0.9570591869622822, Objective Value: 0.0
+Iteration: 46, Current Solution: -0.9537300981765, Objective Value: 0.0
+Iteration: 47, Current Solution: -0.9537300981765, Objective Value: 0.0
+Iteration: 48, Current Solution: -0.7904194226005763, Objective Value: 0.0
+Iteration: 49, Current Solution: -0.7904194226005763, Objective Value: 0.0
+Iteration: 50, Current Solution: -0.7904194226005763, Objective Value: 0.0
+Stopping optimization at iteration 50 as convergence was already detected at 1
 The error term of inversing udldu: -6.3e-01
 Optimal solution: -0.8902372992145351
 Bounds used: [(-1, 1)]
-Total number of iterations performed: 20
-Total number of iterations required: 4
+Total number of iterations performed: 50
+Total number of iterations required: 3
 Plot saved as: Plots/Img-5.png
-Prediction_: -8.9e-01, udldu: 1.7e-04, udldu_:6.3e-01
-lstsq residual: [3.70081e-17], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.32e-01
-lstsq residual: [2.2160536e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/9.83e-03
-lstsq residual: [1.0181599e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/1.13e-02
-lstsq residual: [4.6693127e-12], rank: 4356 -> 4356, max/min singular value: 1.25e+00/4.81e-03
-lstsq residual: [2.3836998e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/2.32e-04
-lstsq residual: [0.00016417], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
---- 120.36855792999268 seconds ---
+Prediction_: -8.9e-01, udldu: 3.4e-04, udldu_:6.3e-01
+lstsq residual: [1.487317e-16], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.32e-01
+lstsq residual: [9.553405e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/9.83e-03
+lstsq residual: [4.4568797e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/1.13e-02
+lstsq residual: [2.2525865e-11], rank: 4356 -> 4356, max/min singular value: 1.25e+00/4.81e-03
+lstsq residual: [1.0828139e-10], rank: 4332 -> 4332, max/min singular value: 1.31e+00/2.32e-04
+lstsq residual: [0.00076272], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
+--- 123.61724591255188 seconds ---
