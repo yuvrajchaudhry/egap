@@ -17,21 +17,28 @@ def inverse_udldu(udldu):
     '''Derive u from udldu using Differential Evolution method and plot the optimization process.'''
     udldu = torch.tensor(udldu).to(**setup)
 
-    def objective_quantile(u, quantile=0.5):
+    def objective_quantile(u, quantile=0.5): #Unused
         u = torch.tensor(u).to(**setup)
         udldu_ = -u / (1 + torch.exp(u))
         loss = torch.mean(torch.max((quantile - (udldu_ - udldu) < 0) * (quantile - (udldu_ - udldu)),
                                     (1 - quantile - (udldu_ - udldu) > 0) * (1 - quantile - (udldu_ - udldu)))).item()
         return loss
 
-    def objective_mse(u):
+    def objective_mse(u): #Unused
         u = torch.tensor(u).to(**setup)
         udldu_ = -u / (1 + torch.exp(u))
         loss = torch.mean((udldu_ - udldu) ** 2).item()
         return loss
 
-    # Define bounds to -100 and 100
-    bounds = [(-1, 1)]  # Adjusted bounds
+    #Objective Function for DE
+    def objective_func(u): #MSE
+        u = torch.tensor(u).to(**setup)
+        udldu_ = -u / (1 + torch.exp(u))
+        loss = torch.mean((udldu_ - udldu) ** 2).item()
+        return loss
+
+    bounds = [(-5, 5)]  # Adjusted bounds
+    popul = 50 # Population Size
 
     iteration_count = 0
     min_iterations = 100
@@ -56,7 +63,7 @@ def inverse_udldu(udldu):
         iteration_count += 1
         # print(f"Iteration: {iteration_count}")
         #current_objective = objective_quantile(xk)
-        current_objective = objective_mse(xk)
+        current_objective = objective_func(xk)
         print(f"Iteration: {iteration_count}, Current Solution: {xk[0]}, Objective Value: {current_objective}")
 
         all_solutions.append(xk[0])
@@ -67,11 +74,51 @@ def inverse_udldu(udldu):
         #     best_solution = xk
         #     best_objective = current_objective
 
+        # if current_objective < best_objective:
+        #     best_solution = xk
+        #     best_objective = current_objective
+        #     best_solution_iteration = iteration_count
+        #     print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
+
+        # if current_objective < best_objective:
+        #     if current_objective == 0.0:
+        #         if abs(xk[0]) < best_solution_value:
+        #             best_solution = xk
+        #             best_solution_value = abs(xk[0])
+        #             best_objective = current_objective
+        #             print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
+        #     else:
+        #         best_solution = xk
+        #         best_objective = current_objective
+        #         best_solution_iteration = iteration_count
+        #         print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
+
         if current_objective < best_objective:
-            best_solution = xk
-            best_objective = current_objective
-            best_solution_iteration = iteration_count
-            print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
+            if current_objective == 0.0:
+                # Compare solutions based on their absolute values once the objective is zero
+                if abs(xk[0]) < best_solution_value:
+                    best_solution = xk
+                    best_solution_value = abs(xk[0])
+                    best_objective = current_objective  # Objective remains zero
+                    best_solution_iteration = iteration_count
+                    print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+            else:
+                # Update based on the objective value if the objective is not zero
+                best_solution = xk
+                best_objective = current_objective
+                best_solution_iteration = iteration_count
+                best_solution_value = abs(xk[0])  # Update the best solution value as well
+                print(f"New best solution found: {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+
+        #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
+        elif current_objective == 0.0:
+            # Even if the current objective is equal to the best (i.e., 0), keep checking for a smaller solution
+            if abs(xk[0]) < best_solution_value:
+                best_solution = xk
+                best_solution_value = abs(xk[0])
+                best_objective = current_objective  # Keep objective as 0
+                best_solution_iteration = iteration_count
+                print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
 
         # Update the best solution based on the current solution's absolute value
         # In this approach the reconstructed image is better than the other approach (loss comparision), however it is worse after rescaling
@@ -109,7 +156,7 @@ def inverse_udldu(udldu):
         if convergence or iteration_count >= max_iterations:
             if convergence:
                 #print(f"Stopping optimization at iteration {iteration_count} as minimum iterations are completed. Convergence was already detected at {convergence_iteration}")
-                print(f"Stopping optimization at iteration {iteration_count} as minimum iterations are completed. Best solution detected at {best_solution_iteration}")
+                print(f"Stopping optimization at iteration {iteration_count} as minimum iterations are completed and convergence is done. Best solution detected at iteration {best_solution_iteration}.")
             else:
                 print(f"Maximum iterations exceeded {iteration_count}")
             return True  # Stop the optimization
@@ -123,7 +170,7 @@ def inverse_udldu(udldu):
         # result = differential_evolution(objective_quantile, bounds, popsize=10, callback=callback_function,
         #                                 maxiter=max_iterations, polish=False, init='latinhypercube',
         #                                 updating='deferred')
-        result = differential_evolution(objective_mse, bounds, popsize=10, callback=callback_function,
+        result = differential_evolution(objective_func, bounds, popsize=popul, callback=callback_function,
                                         maxiter=max_iterations, polish=False, init='latinhypercube',
                                         updating='deferred')
         if result.success and iteration_count >= min_iterations:
@@ -143,8 +190,10 @@ def inverse_udldu(udldu):
     print(f"Best objective value: {best_objective}")
     print(f"Optimal solution: {u_optimized}")
     print(f"Bounds used: {bounds}")
+    print(f"Population: {popul}")
     print(f"Total number of iterations performed: {iteration_count}")
-    print(f"Total number of iterations required: {result.nit}")
+    # print(f"Total number of iterations required: {result.nit}")
+    print(f"Total number of iterations required: {best_solution_iteration}")
 
     # Final plot display
     # plt.show()
