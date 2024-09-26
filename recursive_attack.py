@@ -41,27 +41,6 @@ def inverse_udldu(udldu):
         udldu_ = -u / (1 + torch.exp(u))
         loss = torch.mean(torch.log(torch.cosh(udldu_ - udldu))).item()
         return loss
-
-    def objective_kl_divergence(u): #Unused
-        u = torch.tensor(u).to(**setup)
-        udldu_ = -u / (1 + torch.exp(u))
-        udldu = torch.softmax(udldu, dim=0)
-        udldu_ = torch.softmax(udldu_, dim=0)
-        loss = torch.sum(udldu * torch.log(udldu / (udldu_ + 1e-10))).item()
-        return loss
-
-    def objective_cosine_similarity(u): #Unused
-        u = torch.tensor(u).to(**setup)
-        udldu_ = -u / (1 + torch.exp(u))
-        cosine_sim = torch.nn.functional.cosine_similarity(udldu, udldu_)
-        loss = 1 - torch.mean(cosine_sim).item()
-        return loss
-
-    def objective_wasserstein(u): #Unused
-        u = torch.tensor(u).to(**setup)
-        udldu_ = -u / (1 + torch.exp(u))
-        loss = torch.mean(udldu - udldu_).item()
-        return loss
     def objective_huber(u, delta=1.0): #Unused
         u = torch.tensor(u).to(**setup)
         udldu_ = -u / (1 + torch.exp(u))
@@ -110,39 +89,11 @@ def inverse_udldu(udldu):
         all_solutions.append(xk[0])
         all_objectives.append(current_objective)
 
-        if current_objective < best_objective:
-            best_solution = xk
-            best_objective = current_objective
-            best_solution_iteration = iteration_count
-            print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
-
-
         # if current_objective < best_objective:
-        #     if current_objective == 0.0:
-        #         # Compare solutions based on their absolute values once the objective is zero
-        #         if abs(xk[0]) < best_solution_value:
-        #             best_solution = xk
-        #             best_solution_value = abs(xk[0])
-        #             best_objective = current_objective  # Objective remains zero
-        #             best_solution_iteration = iteration_count
-        #             print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
-        #     else:
-        #         # Update based on the objective value if the objective is not zero
-        #         best_solution = xk
-        #         best_objective = current_objective
-        #         best_solution_iteration = iteration_count
-        #         best_solution_value = abs(xk[0])  # Update the best solution value as well
-        #         print(f"New best solution found: {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
-        #
-        # #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
-        # elif current_objective == 0.0:
-        #     # Even if the current objective is equal to the best (i.e., 0), keep checking for a smaller solution
-        #     if abs(xk[0]) < best_solution_value:
-        #         best_solution = xk
-        #         best_solution_value = abs(xk[0])
-        #         best_objective = current_objective  # Keep objective as 0
-        #         best_solution_iteration = iteration_count
-        #         print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+        #     best_solution = xk
+        #     best_objective = current_objective
+        #     best_solution_iteration = iteration_count
+        #     print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
 
         # Update the best solution based on the current solution's absolute value
         # In this approach the reconstructed image is better than the other approach (loss comparision), however it is worse after rescaling
@@ -152,6 +103,32 @@ def inverse_udldu(udldu):
         #     best_objective = current_objective
         #     print(f"New best solution found: {best_solution}, with objective value: {best_objective}")
 
+        if current_objective < best_objective:
+            if current_objective == 0.0:
+                # Compare solutions based on their absolute values once the objective is zero
+                if abs(xk[0]) < best_solution_value:
+                    best_solution = xk
+                    best_solution_value = abs(xk[0])
+                    best_objective = current_objective  # Objective remains zero
+                    best_solution_iteration = iteration_count
+                    print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+            else:
+                # Update based on the objective value if the objective is not zero
+                best_solution = xk
+                best_objective = current_objective
+                best_solution_iteration = iteration_count
+                best_solution_value = abs(xk[0])  # Update the best solution value as well
+                print(f"New best solution found: {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+
+        #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
+        elif current_objective == 0.0:
+            # Even if the current objective is equal to the best (i.e., 0), keep checking for a smaller solution
+            if abs(xk[0]) < best_solution_value:
+                best_solution = xk
+                best_solution_value = abs(xk[0])
+                best_objective = current_objective  # Keep objective as 0
+                best_solution_iteration = iteration_count
+                print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
 
         # Update the plot with the best solution
         ax.clear()
