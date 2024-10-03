@@ -58,7 +58,7 @@ def inverse_udldu(udldu):
         return loss
 
     bounds = [(-5, 5)]  # Adjusted bounds
-    popul = 50 # Population Size
+    popul = 20 # Population Size
 
     iteration_count = 0
     min_iterations = 100
@@ -102,7 +102,7 @@ def inverse_udldu(udldu):
         #     best_solution_value = abs(xk[0])
         #     best_objective = current_objective
         #     print(f"New best solution found: {best_solution}, with objective value: {best_objective}")
-
+        #
         # if current_objective < best_objective:
         #     if current_objective == 0.0:
         #         # Compare solutions based on their absolute values once the objective is zero
@@ -119,8 +119,8 @@ def inverse_udldu(udldu):
         #         best_solution_iteration = iteration_count
         #         best_solution_value = abs(xk[0])  # Update the best solution value as well
         #         print(f"New best solution found: {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
-
-        #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
+        #
+        # #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
         # elif current_objective == 0.0:
         #     # Even if the current objective is equal to the best (i.e., 0), keep checking for a smaller solution
         #     if abs(xk[0]) < best_solution_value:
