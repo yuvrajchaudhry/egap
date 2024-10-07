@@ -29,7 +29,7 @@ def compare_images(imageA, imageB, title):
 
 
 # Loading the images - Original, R-Gap Version, Evol-RGap version
-original = cv2.imread("images_compare/origin387.png")
+original = cv2.imread("images_compare/origin5.png")
 rgapimg = cv2.imread("images_compare/reconstructed.png")
 #rgapimg = cv2.imread("images_compare/rescale_reconstructed.png")
 #evolimg = cv2.imread("images_compare/r.png")

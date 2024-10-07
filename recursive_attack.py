@@ -57,8 +57,8 @@ def inverse_udldu(udldu):
         loss = torch.mean(torch.log(torch.cosh(udldu_ - udldu))).item()
         return loss
 
-    bounds = [(-5, 5)]  # Adjusted bounds
-    popul = 20 # Population Size
+    bounds = [(-7, 7)]  # Adjusted bounds
+    popul = 50 # Population Size
 
     iteration_count = 0
     min_iterations = 100
