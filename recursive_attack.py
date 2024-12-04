@@ -13,6 +13,83 @@ from torch.optim import Adamax
 setup = {'device': 'cpu', 'dtype': torch.float32}
 
 
+# def inverse_udldu(udldu): #MAE
+#     '''derive u from udldu using gradient descent based method'''
+#     lr = 0.01
+#     u = torch.tensor(0.0).to(**setup).requires_grad_(True)  # Ensure `u` is a float
+#     udldu = torch.tensor(udldu).to(**setup)
+#     optimizer = torch.optim.Adam([u], lr=lr)
+#     loss_fn = nn.L1Loss()  # Use MAE instead of MSE
+#     for i in range(30000):
+#         optimizer.zero_grad()
+#         udldu_ = -u / (1 + torch.exp(u))
+#         l = loss_fn(udldu_, udldu)
+#         l.backward()
+#         optimizer.step()
+#     udldu_ = -u / (1 + torch.exp(u))
+#     print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
+#     return u.detach().numpy()
+
+# def inverse_udldu(udldu): #Huber
+#     '''derive u from udldu using gradient descent based method'''
+#     lr = 0.01
+#     u = torch.tensor(0.0).to(**setup).requires_grad_(True)  # Ensure `u` is a float
+#     udldu = torch.tensor(udldu).to(**setup)
+#     optimizer = torch.optim.Adam([u], lr=lr)
+#     loss_fn = nn.SmoothL1Loss()  # Use Huber Loss
+#     for i in range(30000):
+#         optimizer.zero_grad()
+#         udldu_ = -u / (1 + torch.exp(u))
+#         l = loss_fn(udldu_, udldu)
+#         l.backward()
+#         optimizer.step()
+#     udldu_ = -u / (1 + torch.exp(u))
+#     print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
+#     return u.detach().numpy()
+
+# def inverse_udldu(udldu, quantile=0.5): #Quantile
+#     '''derive u from udldu using gradient descent based method'''
+#     lr = 0.01
+#     u = torch.tensor(0.0).to(**setup).requires_grad_(True)  # Ensure `u` is a float
+#     udldu = torch.tensor(udldu).to(**setup)
+#     optimizer = torch.optim.Adam([u], lr=lr)
+#
+#     def quantile_loss(pred, target, quantile):
+#         error = target - pred
+#         return torch.mean(torch.maximum(quantile * error, (quantile - 1) * error))
+#
+#     for i in range(30000):
+#         optimizer.zero_grad()
+#         udldu_ = -u / (1 + torch.exp(u))
+#         l = quantile_loss(udldu_, udldu, quantile)
+#         l.backward()
+#         optimizer.step()
+#     udldu_ = -u / (1 + torch.exp(u))
+#     print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
+#     return u.detach().numpy()
+
+# def inverse_udldu(udldu): #LogCosh
+#     '''derive u from udldu using gradient descent based method'''
+#     lr = 0.01
+#     u = torch.tensor(0.0).to(**setup).requires_grad_(True)  # Ensure `u` is a float
+#     udldu = torch.tensor(udldu).to(**setup)
+#     optimizer = torch.optim.Adam([u], lr=lr)
+#
+#     def log_cosh_loss(pred, target):
+#         error = pred - target
+#         return torch.mean(torch.log(torch.cosh(error)))
+#
+#     for i in range(30000):
+#         optimizer.zero_grad()
+#         udldu_ = -u / (1 + torch.exp(u))
+#         l = log_cosh_loss(udldu_, udldu)
+#         l.backward()
+#         optimizer.step()
+#     udldu_ = -u / (1 + torch.exp(u))
+#     print(f"The error term of inversing udldu: {udldu.item()-udldu_.item():.1e}")
+#     return u.detach().numpy()
+
+
 def inverse_udldu(udldu):
     '''Derive u from udldu using Differential Evolution method and plot the optimization process.'''
     udldu = torch.tensor(udldu).to(**setup)
@@ -41,7 +118,8 @@ def inverse_udldu(udldu):
         udldu_ = -u / (1 + torch.exp(u))
         loss = torch.mean(torch.log(torch.cosh(udldu_ - udldu))).item()
         return loss
-    def objective_huber(u, delta=1.0): #Unused
+
+    def objective_huber(u, delta=1.0): #Huber
         u = torch.tensor(u).to(**setup)
         udldu_ = -u / (1 + torch.exp(u))
         abs_diff = torch.abs(udldu_ - udldu)
@@ -58,7 +136,7 @@ def inverse_udldu(udldu):
         return loss
 
     bounds = [(-7, 7)]  # Adjusted bounds
-    popul = 50 # Population Size
+    popul = 30 # Population Size
 
     iteration_count = 0
     min_iterations = 100
@@ -95,30 +173,12 @@ def inverse_udldu(udldu):
             best_solution_iteration = iteration_count
             print(f"New best solution found: {best_solution}, with objective value: {best_objective} at iteration {best_solution_iteration}")
 
+
         # Update the best solution based on the current solution's absolute value
         # In this approach the reconstructed image is better than the other approach (loss comparision), however it is worse after rescaling
         # if abs(xk[0]) < best_solution_value:
-        #     best_solution = xk
-        #     best_solution_value = abs(xk[0])
-        #     best_objective = current_objective
-        #     print(f"New best solution found: {best_solution}, with objective value: {best_objective}")
-        #
-        # if current_objective < best_objective:
-        #     if current_objective == 0.0:
-        #         # Compare solutions based on their absolute values once the objective is zero
-        #         if abs(xk[0]) < best_solution_value:
-        #             best_solution = xk
-        #             best_solution_value = abs(xk[0])
-        #             best_objective = current_objective  # Objective remains zero
-        #             best_solution_iteration = iteration_count
-        #             print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
-        #     else:
-        #         # Update based on the objective value if the objective is not zero
-        #         best_solution = xk
-        #         best_objective = current_objective
-        #         best_solution_iteration = iteration_count
-        #         best_solution_value = abs(xk[0])  # Update the best solution value as well
-        #         print(f"New best solution found: {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
+
+
         #
         # #Had to add this elif as a fail proof of best solution updates when the objective value 0 is reached already
         # elif current_objective == 0.0:
@@ -132,8 +192,9 @@ def inverse_udldu(udldu):
 
         # Update the plot with the best solution
         ax.clear()
-        ax.set_xlim(bounds[0])
-        ax.set_ylim([-100, 100])  # Adjust as necessary for your specific problem
+       # ax.set_xlim(bounds[0])
+        ax.set_xlim([-10, 10])
+        ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
         # ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
         #ax.scatter(xk[0], current_objective, color='red', label='Best Solution')
         if all_solutions:
@@ -203,6 +264,7 @@ def inverse_udldu(udldu):
     print(f"Plot saved as: {save_path}")
 
     return u_optimized
+
 
        # def callback_function(xk, convergence):
     #     nonlocal iteration_count

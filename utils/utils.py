@@ -34,6 +34,16 @@ def exponential_loss(target, inputs):
     loss = torch.exp(-target * pred)
     return torch.mean(loss)
 
+
+def cosine_loss(target, inputs):
+    # Normalize the inputs and target for cosine similarity
+    cos = nn.CosineSimilarity(dim=-1, eps=1e-6)  # Computes cosine similarity
+    # Compute cosine similarity
+    cos_sim = cos(inputs, target)
+    # Cosine loss is 1 - cosine similarity
+    loss = 1 - cos_sim
+    return torch.mean(loss)
+
 def cross_entropy_loss(target, inputs):
     m = nn.Sigmoid()
     loss_fn = nn.BCELoss()
