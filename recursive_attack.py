@@ -144,9 +144,16 @@ def inverse_udldu(udldu):
     convergence_iteration = None
 
     # Initialize the plot
+    # fig, ax = plt.subplots()
+    # ax.set_xlim(bounds[0])
+    # ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
     fig, ax = plt.subplots()
-    ax.set_xlim(bounds[0])
-    ax.set_ylim([-1, 1])  # Adjust as necessary for your specific problem
+    ax.set_xlim([-10, 10])
+    ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
+    ax.set_xlabel('Solution Value (u)')
+    ax.set_ylabel('Objective Function Value (Loss)')
+    ax.set_title('Search Space of Solutions in Differential Evolution Optimization', fontsize=11)
+    ax.title.set_size(11)
 
     all_solutions = []
     all_objectives = []
@@ -191,12 +198,20 @@ def inverse_udldu(udldu):
         #         print(f"New best solution found (objective = 0): {best_solution}, with objective value: {best_objective}, at iteration {best_solution_iteration}")
 
         # Update the plot with the best solution
+       #  ax.clear()
+       # # ax.set_xlim(bounds[0])
+       #  ax.set_xlim([-10, 10])
+       #  ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
+       #  # ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
+       #  #ax.scatter(xk[0], current_objective, color='red', label='Best Solution')
         ax.clear()
-       # ax.set_xlim(bounds[0])
         ax.set_xlim([-10, 10])
         ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
-        # ax.scatter(xk[0], objective_quantile(xk), color='red', label='Best Solution')
-        #ax.scatter(xk[0], current_objective, color='red', label='Best Solution')
+        ax.set_xlabel('Solution Value (u)')
+        ax.set_ylabel('Objective Function Value (Loss)')
+        ax.set_title('Search Space of Solutions', fontsize=11)
+        ax.title.set_size(11)
+
         if all_solutions:
             ax.scatter(all_solutions, all_objectives, color='blue', label='All Solutions')
         if best_solution is not None:
