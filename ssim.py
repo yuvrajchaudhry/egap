@@ -31,10 +31,10 @@ def compare_images(imageA, imageB, title):
 
 
 # Loading the images - Original, R-Gap Version, Evol-RGap version, New Third Image
-original = cv2.imread("images_compare/origin30455c.png")
-rgapimg = cv2.imread("images_compare/rgap30455c.png")
-egapimg = cv2.imread("images_compare/egap30455c.png")
-dlgimg = cv2.imread("images_compare/dlg30455.png")  # Replace with your third image path
+original = cv2.imread("images_compare/origin26.png")
+rgapimg = cv2.imread("images_compare/rehuber.png")
+egapimg = cv2.imread("images_compare/requantile.png")
+dlgimg = cv2.imread("images_compare/remae.png")  # Replace with your third image path
 
 # Converting to Grayscale
 original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
