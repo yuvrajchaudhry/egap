@@ -124,8 +124,8 @@ Plot saved as: Plots/Img-5.png
 Prediction_: -2.7e-04, udldu: 3.7e-04, udldu_:1.3e-04
 lstsq residual: [1.147866e-16], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.10e-01
 lstsq residual: [4.1523977e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/6.15e-03
-lstsq residual: [2.4640209e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/7.98e-03
-lstsq residual: [1.1818853e-11], rank: 4356 -> 4356, max/min singular value: 1.25e+00/3.25e-03
-lstsq residual: [8.312154e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/1.57e-04
+lstsq residual: [2.4640197e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/7.98e-03
+lstsq residual: [1.1819518e-11], rank: 4356 -> 4356, max/min singular value: 1.25e+00/3.25e-03
+lstsq residual: [8.31217e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/1.57e-04
 lstsq residual: [0.00145223], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
---- 123.87428545951843 seconds ---
+--- 124.15165114402771 seconds ---
