@@ -16,7 +16,6 @@ with open("config.yaml", 'r') as stream:
 parser = argparse.ArgumentParser(description="Model related arguments. For other configurations please check CONFIG file.")
 parser.add_argument("-d", "--dataset", help="Choose the data source.", choices=["CIFAR10", "MNIST"], default="CIFAR10")
 parser.add_argument("-i", "--index", help="Choose a specific image to reconstruct.", type=int, default=-1)
-parser.add_argument("-b", "--batchsize", default=1, help="Mini-batch size", type=int)
 parser.add_argument("-p", "--parameters", help="Load pre-trained model.", default=None)
 parser.add_argument("-m", "--model", help="Network architecture.", choices=["CNN6", "CNN6-d", "FCN3"], default='CNN6')
 args = parser.parse_args()
@@ -65,7 +64,7 @@ start_time = time.time()
 
 def main():
     train_sample, test_sample = dataloader(dataset=args.dataset, mode="attack", index=args.index,
-                                           batchsize=args.batchsize, config=config)
+                                           config=config)
     # set up inference framework
     torch.manual_seed(0)
     np.random.seed(0)
@@ -79,13 +78,10 @@ def main():
 
     tt = torchvision.transforms.ToTensor()
     tp = torchvision.transforms.ToPILImage()
-    if args.batchsize == 1:
-        image, label = train_sample
-        x = tt(image).unsqueeze(0).to(**setup)
-    else:
-        image, label = list(zip(*train_sample))
-        x = [tt(im) for im in image]
-        x = torch.stack(x).to(**setup)
+
+    image, label = train_sample
+    x = tt(image).unsqueeze(0).to(**setup)
+
 
     # load parameters
     if args.parameters:
@@ -169,13 +165,11 @@ def main():
 
     # Visualization
     x_ = x_.reshape(x.shape[-3:]).squeeze()
-    if args.batchsize > 1:
-        show_images(image, path=os.path.join(config['path_to_demo'], 'origin.png'), cols=len(image)//2+1)
-    else:
-        plt.figure('origin')
-        plt.imshow(image)
-        plt.axis('off')
-        plt.savefig(os.path.join(config['path_to_demo'], 'origin.png'))
+
+    plt.figure('origin')
+    plt.imshow(image)
+    plt.axis('off')
+    plt.savefig(os.path.join(config['path_to_demo'], 'origin.png'))
 
     plt.figure('reconstructed')
     plt.imshow(tp(torch.tensor(x_)))
