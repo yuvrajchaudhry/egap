@@ -1,130 +1,131 @@
 Running on cuda, PyTorch version 2.3.1+cu121
 Files already downloaded and verified
 Files already downloaded and verified
-pred: [[-8.117201e-05]], y: tensor([1.], device='cuda:0')
+pred: [[-0.00148782]], y: tensor([1.], device='cuda:0')
 ****************
 Performing Evolved R-GAP
 ****************
-Iteration: 1, Current Solution: 6.789066314951566, Objective Value: 2.932505594799295e-05
-New best solution found: [6.78906631], with objective value: 2.932505594799295e-05 at iteration 1
+Iteration: 1, Current Solution: 6.789066314951566, Objective Value: 3.2066785934148356e-05
+New best solution found: [6.78906631], with objective value: 3.2066785934148356e-05 at iteration 1
 Convergence detected at iteration 1
-Iteration: 2, Current Solution: 6.94189058353014, Objective Value: 2.2649508537142538e-05
-New best solution found: [6.94189058], with objective value: 2.2649508537142538e-05 at iteration 2
-Iteration: 3, Current Solution: 6.94189058353014, Objective Value: 2.2649508537142538e-05
-Iteration: 4, Current Solution: 6.94189058353014, Objective Value: 2.2649508537142538e-05
-Iteration: 5, Current Solution: 6.990471292931392, Objective Value: 2.074220174108632e-05
-New best solution found: [6.99047129], with objective value: 2.074220174108632e-05 at iteration 5
-Iteration: 6, Current Solution: 6.990471292931392, Objective Value: 2.074220174108632e-05
-Iteration: 7, Current Solution: 6.990471292931392, Objective Value: 2.074220174108632e-05
-Iteration: 8, Current Solution: 6.990471292931392, Objective Value: 2.074220174108632e-05
-Iteration: 9, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-New best solution found: [-3.02913608e-05], with objective value: 0.0 at iteration 9
-Iteration: 10, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 11, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 12, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 13, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 14, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 15, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 16, Current Solution: -3.0291360750611673e-05, Objective Value: 0.0
-Iteration: 17, Current Solution: -0.0005531248824400814, Objective Value: 0.0
-Iteration: 18, Current Solution: -2.8038159264553997e-05, Objective Value: 0.0
-Iteration: 19, Current Solution: 0.00013349724268785224, Objective Value: 0.0
-Iteration: 20, Current Solution: 0.00016775446964234497, Objective Value: 0.0
-Iteration: 21, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 22, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 23, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 24, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 25, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 26, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 27, Current Solution: 6.9924540900512095, Objective Value: 2.074220174108632e-05
-Iteration: 28, Current Solution: 6.995508711569289, Objective Value: 2.062299427052494e-05
-Iteration: 29, Current Solution: 6.995508711569289, Objective Value: 2.062299427052494e-05
-Iteration: 30, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 31, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 32, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 33, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 34, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 35, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 36, Current Solution: 6.998892489464579, Objective Value: 2.0503786799963564e-05
-Iteration: 37, Current Solution: 6.93130897970405, Objective Value: 2.3007127310847864e-05
-Iteration: 38, Current Solution: 6.9348273446873465, Objective Value: 2.288792165927589e-05
-Iteration: 39, Current Solution: 6.938258718491279, Objective Value: 2.276871418871451e-05
-Iteration: 40, Current Solution: 6.983959752573105, Objective Value: 2.098061486321967e-05
-Iteration: 41, Current Solution: 6.983959752573105, Objective Value: 2.098061486321967e-05
-Iteration: 42, Current Solution: 6.983959752573105, Objective Value: 2.098061486321967e-05
-Iteration: 43, Current Solution: 6.983959752573105, Objective Value: 2.098061486321967e-05
-Iteration: 44, Current Solution: 6.993864494585375, Objective Value: 2.062299427052494e-05
-Iteration: 45, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 46, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 47, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 48, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 49, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 50, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 51, Current Solution: 6.998916043173943, Objective Value: 2.0503786799963564e-05
-Iteration: 52, Current Solution: 6.862029449228418, Objective Value: 2.586808113846928e-05
-Iteration: 53, Current Solution: 6.929161220692099, Objective Value: 2.312633478140924e-05
-Iteration: 54, Current Solution: 6.929161220692099, Objective Value: 2.312633478140924e-05
-Iteration: 55, Current Solution: 6.929161220692099, Objective Value: 2.312633478140924e-05
-Iteration: 56, Current Solution: 6.929161220692099, Objective Value: 2.312633478140924e-05
-Iteration: 57, Current Solution: 6.929161220692099, Objective Value: 2.312633478140924e-05
-Iteration: 58, Current Solution: 6.9778914283697775, Objective Value: 2.1219027985353023e-05
-Iteration: 59, Current Solution: 6.9778914283697775, Objective Value: 2.1219027985353023e-05
-Iteration: 60, Current Solution: 6.994191617164118, Objective Value: 2.062299427052494e-05
-Iteration: 61, Current Solution: 6.994191617164118, Objective Value: 2.062299427052494e-05
-Iteration: 62, Current Solution: 6.994191617164118, Objective Value: 2.062299427052494e-05
-Iteration: 63, Current Solution: 6.994191617164118, Objective Value: 2.062299427052494e-05
-Iteration: 64, Current Solution: 6.997545299363013, Objective Value: 2.0503786799963564e-05
-Iteration: 65, Current Solution: 6.997545299363013, Objective Value: 2.0503786799963564e-05
-Iteration: 66, Current Solution: 6.997545299363013, Objective Value: 2.0503786799963564e-05
-Iteration: 67, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 68, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 69, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 70, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 71, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 72, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 73, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 74, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 75, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 76, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 77, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 78, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 79, Current Solution: 0.004523290223392706, Objective Value: 2.622600959512056e-06
-Iteration: 80, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 81, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 82, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 83, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 84, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 85, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 86, Current Solution: 0.0015033622646078992, Objective Value: 2.3841855067985307e-07
-Iteration: 87, Current Solution: 0.0009670252794873324, Objective Value: 1.1920928244535389e-07
-Iteration: 88, Current Solution: -0.00043060526819549416, Objective Value: 0.0
-Iteration: 89, Current Solution: -0.00043060526819549416, Objective Value: 0.0
-Iteration: 90, Current Solution: -0.00043060526819549416, Objective Value: 0.0
-Iteration: 91, Current Solution: -0.00043060526819549416, Objective Value: 0.0
-Iteration: 92, Current Solution: -0.00043060526819549416, Objective Value: 0.0
-Iteration: 93, Current Solution: -0.00042150565832177467, Objective Value: 0.0
-Iteration: 94, Current Solution: -0.0004753963398247407, Objective Value: 0.0
-Iteration: 95, Current Solution: -0.00012685614770480136, Objective Value: 0.0
-Iteration: 96, Current Solution: 0.00035242321649708863, Objective Value: 0.0
-Iteration: 97, Current Solution: 6.989847945182733, Objective Value: 2.0861407392658293e-05
-Iteration: 98, Current Solution: 6.989847945182733, Objective Value: 2.0861407392658293e-05
-Iteration: 99, Current Solution: 6.989847945182733, Objective Value: 2.0861407392658293e-05
-Iteration: 100, Current Solution: 6.989847945182733, Objective Value: 2.0861407392658293e-05
-Stopping optimization at iteration 100 as minimum iterations are completed and convergence is done. Best solution detected at iteration 9.
-The error term of inversing udldu: 5.1e-06
-Best solution: [-3.02913608e-05]
+Iteration: 2, Current Solution: 6.94189058353014, Objective Value: 2.5033637939486653e-05
+New best solution found: [6.94189058], with objective value: 2.5033637939486653e-05 at iteration 2
+Iteration: 3, Current Solution: 6.94189058353014, Objective Value: 2.5033637939486653e-05
+Iteration: 4, Current Solution: 6.94189058353014, Objective Value: 2.5033637939486653e-05
+Iteration: 5, Current Solution: 6.990471292931392, Objective Value: 2.312633478140924e-05
+New best solution found: [6.99047129], with objective value: 2.312633478140924e-05 at iteration 5
+Iteration: 6, Current Solution: 6.990471292931392, Objective Value: 2.312633478140924e-05
+Iteration: 7, Current Solution: 6.990471292931392, Objective Value: 2.312633478140924e-05
+Iteration: 8, Current Solution: 6.990471292931392, Objective Value: 2.312633478140924e-05
+Iteration: 9, Current Solution: -3.0291360750611673e-05, Objective Value: 1.1920928244535389e-07
+New best solution found: [-3.02913608e-05], with objective value: 1.1920928244535389e-07 at iteration 9
+Iteration: 10, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+New best solution found: [-0.00026825], with objective value: 0.0 at iteration 10
+Iteration: 11, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+Iteration: 12, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+Iteration: 13, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+Iteration: 14, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+Iteration: 15, Current Solution: -0.00026824796604241197, Objective Value: 0.0
+Iteration: 16, Current Solution: -0.0002654802293466929, Objective Value: 0.0
+Iteration: 17, Current Solution: -0.00015154745783441115, Objective Value: 0.0
+Iteration: 18, Current Solution: -0.0007994723266585568, Objective Value: 0.0
+Iteration: 19, Current Solution: -0.0007994723266585568, Objective Value: 0.0
+Iteration: 20, Current Solution: 6.952910267144716, Objective Value: 2.455681169521995e-05
+Iteration: 21, Current Solution: 6.952910267144716, Objective Value: 2.455681169521995e-05
+Iteration: 22, Current Solution: 6.952910267144716, Objective Value: 2.455681169521995e-05
+Iteration: 23, Current Solution: 6.952910267144716, Objective Value: 2.455681169521995e-05
+Iteration: 24, Current Solution: 6.990025618854712, Objective Value: 2.312633478140924e-05
+Iteration: 25, Current Solution: 6.990025618854712, Objective Value: 2.312633478140924e-05
+Iteration: 26, Current Solution: 6.990025618854712, Objective Value: 2.312633478140924e-05
+Iteration: 27, Current Solution: 6.990025618854712, Objective Value: 2.312633478140924e-05
+Iteration: 28, Current Solution: 6.994701784841281, Objective Value: 2.3007127310847864e-05
+Iteration: 29, Current Solution: 6.998237135811249, Objective Value: 2.288792165927589e-05
+Iteration: 30, Current Solution: 6.998237135811249, Objective Value: 2.288792165927589e-05
+Iteration: 31, Current Solution: 6.998237135811249, Objective Value: 2.288792165927589e-05
+Iteration: 32, Current Solution: 6.998237135811249, Objective Value: 2.288792165927589e-05
+Iteration: 33, Current Solution: 6.998237135811249, Objective Value: 2.288792165927589e-05
+Iteration: 34, Current Solution: 6.9987032332359815, Objective Value: 2.276871418871451e-05
+Iteration: 35, Current Solution: 6.9987032332359815, Objective Value: 2.276871418871451e-05
+Iteration: 36, Current Solution: 6.9987032332359815, Objective Value: 2.276871418871451e-05
+Iteration: 37, Current Solution: 6.9987032332359815, Objective Value: 2.276871418871451e-05
+Iteration: 38, Current Solution: 6.998740584747484, Objective Value: 2.276871418871451e-05
+Iteration: 39, Current Solution: 6.6138921883495225, Objective Value: 4.2676016164477915e-05
+Iteration: 40, Current Solution: 6.897722915127986, Objective Value: 2.682172998902388e-05
+Iteration: 41, Current Solution: 6.897722915127986, Objective Value: 2.682172998902388e-05
+Iteration: 42, Current Solution: 6.9183693289269055, Objective Value: 2.5987286790041253e-05
+Iteration: 43, Current Solution: 6.963420384437051, Objective Value: 2.4199192921514623e-05
+Iteration: 44, Current Solution: 6.986236491961215, Objective Value: 2.3245540432981215e-05
+Iteration: 45, Current Solution: 6.998177602095927, Objective Value: 2.288792165927589e-05
+Iteration: 46, Current Solution: 6.998177602095927, Objective Value: 2.288792165927589e-05
+Iteration: 47, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 48, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 49, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 50, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 51, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 52, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 53, Current Solution: 6.99860874203084, Objective Value: 2.276871418871451e-05
+Iteration: 54, Current Solution: 6.998615733265865, Objective Value: 2.276871418871451e-05
+Iteration: 55, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 56, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 57, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 58, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 59, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 60, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 61, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 62, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 63, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 64, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 65, Current Solution: -0.015066823563286813, Objective Value: 2.610649426060263e-05
+Iteration: 66, Current Solution: 0.013167862935244523, Objective Value: 2.3841574147809297e-05
+Iteration: 67, Current Solution: 0.005569680256108489, Objective Value: 5.006777428206988e-06
+Iteration: 68, Current Solution: 0.005569680256108489, Objective Value: 5.006777428206988e-06
+Iteration: 69, Current Solution: -0.005519793862854505, Objective Value: 2.861018856492592e-06
+Iteration: 70, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 71, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 72, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 73, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 74, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 75, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 76, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 77, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 78, Current Solution: -0.00045054829296131693, Objective Value: 0.0
+Iteration: 79, Current Solution: 6.795899136315027, Objective Value: 3.1709168979432434e-05
+Iteration: 80, Current Solution: 6.957715644519902, Objective Value: 2.4437606043647975e-05
+Iteration: 81, Current Solution: 6.957715644519902, Objective Value: 2.4437606043647975e-05
+Iteration: 82, Current Solution: 6.957715644519902, Objective Value: 2.4437606043647975e-05
+Iteration: 83, Current Solution: 6.957715644519902, Objective Value: 2.4437606043647975e-05
+Iteration: 84, Current Solution: 6.957715644519902, Objective Value: 2.4437606043647975e-05
+Iteration: 85, Current Solution: 6.9917168081337895, Objective Value: 2.312633478140924e-05
+Iteration: 86, Current Solution: 6.9917168081337895, Objective Value: 2.312633478140924e-05
+Iteration: 87, Current Solution: 0.01250112528738101, Objective Value: 2.169585604860913e-05
+Iteration: 88, Current Solution: -0.004003224058491628, Objective Value: 1.311301275563892e-06
+Iteration: 89, Current Solution: 0.0007705910857878084, Objective Value: 2.3841855067985307e-07
+Iteration: 90, Current Solution: 0.0007705910857878084, Objective Value: 2.3841855067985307e-07
+Iteration: 91, Current Solution: -0.0018389311465446534, Objective Value: 1.1920928244535389e-07
+Iteration: 92, Current Solution: -0.0013464010335602072, Objective Value: 0.0
+Iteration: 93, Current Solution: -0.0013464010335602072, Objective Value: 0.0
+Iteration: 94, Current Solution: -0.0014014491174462185, Objective Value: 0.0
+Iteration: 95, Current Solution: -0.0011622886874558258, Objective Value: 0.0
+Iteration: 96, Current Solution: -0.0011622886874558258, Objective Value: 0.0
+Iteration: 97, Current Solution: -0.0008024473850833935, Objective Value: 0.0
+Iteration: 98, Current Solution: -0.00024688731861033375, Objective Value: 0.0
+Iteration: 99, Current Solution: 6.7967040623455315, Objective Value: 3.1709168979432434e-05
+Iteration: 100, Current Solution: 6.9728378698974165, Objective Value: 2.3841574147809297e-05
+Stopping optimization at iteration 100 as minimum iterations are completed and convergence is done. Best solution detected at iteration 10.
+The error term of inversing udldu: 2.4e-04
+Best solution: [-0.00026825]
 Best objective value: 0.0
-Optimal solution: -3.0291360750611673e-05
+Optimal solution: -0.00026824796604241197
 Bounds used: [(-7, 7)]
 Population: 30
 Total number of iterations performed: 100
-Total number of iterations required: 9
+Total number of iterations required: 10
 Plot saved as: Plots/Img-5.png
-Prediction_: -3.0e-05, udldu: 2.0e-05, udldu_:1.5e-05
-lstsq residual: [2.9419023e-17], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.11e-01
-lstsq residual: [1.02419915e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/7.31e-03
-lstsq residual: [6.0001925e-15], rank: 4356 -> 4356, max/min singular value: 1.25e+00/8.25e-03
-lstsq residual: [4.455479e-12], rank: 4356 -> 4356, max/min singular value: 1.25e+00/3.52e-03
-lstsq residual: [2.151465e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/1.86e-04
-lstsq residual: [0.00040574], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
---- 143.54730415344238 seconds ---
+Prediction_: -2.7e-04, udldu: 3.7e-04, udldu_:1.3e-04
+lstsq residual: [1.147866e-16], rank: 3136 -> 3136, max/min singular value: 1.38e+00/2.10e-01
+lstsq residual: [4.1523977e-17], rank: 4356 -> 4356, max/min singular value: 1.26e+00/6.15e-03
+lstsq residual: [2.4640209e-14], rank: 4356 -> 4356, max/min singular value: 1.25e+00/7.98e-03
+lstsq residual: [1.1818853e-11], rank: 4356 -> 4356, max/min singular value: 1.25e+00/3.25e-03
+lstsq residual: [8.312154e-11], rank: 4332 -> 4332, max/min singular value: 1.31e+00/1.57e-04
+lstsq residual: [0.00145223], rank: 3888 -> 3888, max/min singular value: 1.35e+00/1.40e-02
+--- 123.87428545951843 seconds ---
