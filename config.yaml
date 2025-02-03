@@ -1,5 +1,5 @@
 path_to_dataset: ~/data
-path_to_demo: ./reconstructed
+path_to_demo: ./Reconstructed
 path_to_model: ./models/parameters
 
 multithread: 0

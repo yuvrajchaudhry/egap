@@ -134,7 +134,7 @@ def main():
             k = k.reshape(1, -1).astype(np.float32)
 
         else:
-            # derive activation function
+            # Derive activation function
             if isinstance(modules[i].act, nn.LeakyReLU):
                 da = derive_leakyrelu(x_, slope=modules[i].act.negative_slope)
             elif isinstance(modules[i].act, nn.Identity):
@@ -167,7 +167,7 @@ def main():
             # In consideration of computational efficiency, for FCN only takes gradient constraints into account.
             x_, last_weight = fcn_reconstruction(k=k, gradient=g), w
 
-    # visualization
+    # Visualization
     x_ = x_.reshape(x.shape[-3:]).squeeze()
     if args.batchsize > 1:
         show_images(image, path=os.path.join(config['path_to_demo'], 'origin.png'), cols=len(image)//2+1)
