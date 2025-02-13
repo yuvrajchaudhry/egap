@@ -108,7 +108,7 @@ def main():
     last_weight = []
 
     print('****************')
-    print('Performing Evolved R-GAP')
+    print('Performing E-GAP')
     print('****************')
     for i in range(len(modules)):
         #g = original_dy_dx[i].numpy()
