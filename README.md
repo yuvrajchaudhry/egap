@@ -32,6 +32,11 @@ Parameter `i` is for image number, `m` is for the model, `d` is for the dataset.
 python main.py -i 25 -m MNIST -d FCN3
 ```
 
+* Reconstruction of batch images (Replace "x" by batch size, eg. 2. Please ensure that the size does not exceed the number of your cpu cores.):
+```
+python main.py -b x
+```
+
 * To compare and get the SSIM score of images, place the images in the `images_compare` folder and edit the image names in the `ssim.py` file.
 ```
 python ssim.py
@@ -45,13 +50,13 @@ python ssim.py
   </tr>
   <tr>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/origin.png" width="200"/>
+      <img src="./reconstructed/origin789.png" width="200"/>
     </td>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/reconstructed.png" width="200"/>
+      <img src="./reconstructed/reconstructed_789.png" width="200"/>
     </td>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/rescale_reconstructed.png" width="200"/>
+      <img src="./reconstructed/rescale_reconstructed_789.png" width="200"/>
     </td>
   </tr>
 </table>
