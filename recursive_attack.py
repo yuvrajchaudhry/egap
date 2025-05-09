@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
+import os
 from scipy.optimize import differential_evolution
 from torch.optim import LBFGS
 from torch.optim import Adam
@@ -12,9 +13,11 @@ from torch.optim import Adamax
 
 setup = {'device': 'cpu', 'dtype': torch.float32}
 
-def inverse_udldu(udldu):
+def inverse_udldu(udldu, image_index=None):
     '''Derive u from udldu using Differential Evolution method.'''
     udldu = torch.tensor(udldu).to(**setup)
+
+    os.makedirs("Plots", exist_ok=True)
 
     #Objective Function for DE
     def objective_func(u): #Logcosh
@@ -33,12 +36,12 @@ def inverse_udldu(udldu):
 
     # Initialize the plot
     fig, ax = plt.subplots()
-    ax.set_xlim([-10, 10])
-    ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
-    ax.set_xlabel('Solution Value (u)')
-    ax.set_ylabel('Objective Function Value (Loss)')
-    ax.set_title('Search Space of Solutions in Differential Evolution Optimization', fontsize=11)
-    ax.title.set_size(11)
+    # ax.set_xlim([-10, 10])
+    # ax.set_ylim([-10, 10])  # Adjust as necessary for your specific problem
+    # ax.set_xlabel('Solution Value (u)')
+    # ax.set_ylabel('Objective Function Value (Loss)')
+    # ax.set_title('Search Space of Solutions in Differential Evolution Optimization', fontsize=11)
+    # ax.title.set_size(11)
 
     all_solutions = []
     all_objectives = []
@@ -92,7 +95,6 @@ def inverse_udldu(udldu):
         ax.legend()
         plt.draw()
         #plt.pause(0.1)
-
         if convergence and convergence_iteration is None:
             convergence_iteration = iteration_count
             print(f"Convergence detected at iteration {iteration_count}")
@@ -142,11 +144,15 @@ def inverse_udldu(udldu):
     # print(f"Total number of iterations required: {result.nit}")
     print(f"Total number of iterations required: {best_solution_iteration}")
 
-    # Final plot display
-    # plt.show()
-    save_path= "Plots/Img-5.png"
-    plt.savefig(save_path)
-    print(f"Plot saved as: {save_path}")
+    if image_index is not None:
+        plot_save_path = os.path.join("Plots", f"Img_{image_index}.png")
+    else:
+        plot_save_path = os.path.join("Plots", "Img.png")
+
+    plt.savefig(plot_save_path)
+    plt.close(fig)  # Close the figure to free memory
+
+    print(f"Plot saved as: {plot_save_path}")
 
     return u_optimized
 

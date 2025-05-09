@@ -4,11 +4,12 @@ import random
 import torchvision.transforms as transformers
 
 
-def dataloader(dataset, mode, index, config):
+def dataloader(dataset, mode, index, batchsize, config):
     '''
     :param dataset: MNIST or CIFAR10 or CelebA
     :param mode: Train or reconstruction.
     :param index: Pick up a specific image.
+    :param batchsize: Size of mini-batch.
     :param config: Some meta arguments.
     :return: Dataloader of pytorch in train mode and PIL image, as well as label in attack mode.
     '''
@@ -26,13 +27,17 @@ def dataloader(dataset, mode, index, config):
         raise ValueError("Unknown dataset.")
 
     if mode == "attack":
+        if batchsize != 1:
+            trainloader = random.sample(list(trainset), batchsize)
+            testloader = random.sample(list(testset), batchsize)
 
-        if index == -1:
-            trainloader = random.choice(list(trainset))
-            testloader = random.choice(list(testset))
         else:
-            trainloader = trainset[index]
-            testloader = trainset[index]
+            if index == -1:
+                trainloader = random.choice(list(trainset))
+                testloader = random.choice(list(testset))
+            else:
+                trainloader = trainset[index]
+                testloader = trainset[index]
         return trainloader, testloader
 
     elif mode == "train":
@@ -40,13 +45,14 @@ def dataloader(dataset, mode, index, config):
         # no augmentation in this version
         trainset.transform = preprocessing(channels)
         testset.transform = preprocessing(channels)
-        trainloader = torch.utils.data.DataLoader(trainset, shuffle=True,
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=batchsize, shuffle=True,
                                                   num_workers=config["multithread"])
-        testloader = torch.utils.data.DataLoader(testset, shuffle=True,
+        testloader = torch.utils.data.DataLoader(testset, batch_size=batchsize, shuffle=True,
                                                  num_workers=config["multithread"])
         return trainloader, testloader
     else:
         raise ValueError("Unknown mode.")
+
 
 
 def preprocessing(channel):
