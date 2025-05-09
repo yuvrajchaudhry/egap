@@ -50,13 +50,13 @@ python ssim.py
   </tr>
   <tr>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/origin789.png" width="200"/>
+      <img src="./Reconstructed/origin789.png" width="200"/>
     </td>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/reconstructed_789.png" width="200"/>
+      <img src="./Reconstructed/reconstructed_789.png" width="200"/>
     </td>
     <td style="border: 2px solid white; padding: 8px;">
-      <img src="./reconstructed/rescale_reconstructed_789.png" width="200"/>
+      <img src="./Reconstructed/rescale_reconstructed_789.png" width="200"/>
     </td>
   </tr>
 </table>
