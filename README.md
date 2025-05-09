@@ -46,7 +46,7 @@ python ssim.py
   <tr>
     <th style="border: 2px solid white; padding: 8px;">Original</th>
     <th style="border: 2px solid white; padding: 8px;">Reconstructed</th>
-    <th style="border: 2px solid white; padding: 8px;">Rescale Reconstructed</th>
+    <th style="border: 2px solid white; padding: 8px;">Rescaled Reconstructed</th>
   </tr>
   <tr>
     <td style="border: 2px solid white; padding: 8px;">
